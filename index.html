@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Back to Life</title>
+    <link rel="shortcut icon" id="favicon" />
+    <link rel="stylesheet" type="text/css" href="game.css">
+  </head>
+  <body>
+    <div id="wrap">
+      <div id="status">
+        <span style="width:90px;">&nbsp;Score:</span>
+        <span style="width:210px;" id="score">0 of 230</span>
+        <span style="width:300px;text-align:center;" id="region">Back to Life</span>
+        <span style="width:300px;text-align:right;" id="time">        </span>
+      </div>
+      <div id="screen">
+        <div class="drain" style="left:85px;"></div>
+        <div class="drain" style="left:430px;"></div>
+        <div class="drain" style="left:775px;"></div>
+        <div class="door" style="left:243px;"></div>
+        <div class="door" style="left:620px;"></div>
+        <div id="sides"></div>
+        <div id="bricks"></div>
+        <canvas id="wall" width="960" height="260"></canvas>
+        <div id="edge"></div>
+        <div id="water"></div>
+      </div>
+      <div id="sentence">Walk to</div>
+      <div id="controls">
+	      <div id="commands">
+	        <span>Open</span><span>Pick up</span><span>Use</span><span>Put on</span>
+	        <span>Close</span><span>Look at</span><span>Push</span><span>Take off</span>
+	        <span>Give</span><span>Talk to</span><span>Pull</span><span>Eat</span>
+	      </div>
+	      <div id="arrows">
+          <span id="up">&#8679;</span>
+          <span id="down">&#8681;</span>
+        </div>
+        <div id="items">
+          <div id="itemlist">
+          </div>
+        </div>
+	    </div>
+    </div>
+    <script>var $ = {};</script>
+    <script src="./util.js"></script>
+    <script src="./logic.js"></script>
+    <script src="./obj.js"></script>
+    <script src="./sprite.js"></script>
+    <script src="./actor.js"></script>
+    <script src="./ego.js"></script>
+    <script src="./game.js"></script>
+  </body>
+</html>
