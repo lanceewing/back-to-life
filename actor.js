@@ -97,6 +97,10 @@ class Actor extends Sprite {
           }
         }, 500);
       }, (text.length / 10) * 1500);
+
+      //let utterance = new SpeechSynthesisUtterance(text);
+      //utterance.pitch = 0;
+      //window.speechSynthesis.speak(utterance);
     }
   
     /**

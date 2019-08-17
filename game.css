@@ -117,7 +117,8 @@ span {
 }
 #wrap {
   background-color: #000;
-  margin: auto;
+  margin-top: auto;
+  margin-bottom: auto;
   width: 960px;
   height: 627px;
   position: absolute;
@@ -127,10 +128,10 @@ span {
   right: 0;
   cursor: crosshair;
   opacity: 0;
+  overflow: hidden;
 }
 #screen {
   position: relative;
-  /*width: 960px;*/  /* 960px; This width is what makes wall render over ego beyond this point, so needs to be calculated on screen resize */
   height: 430px;
   overflow: hidden;
   background-color: #333333;
@@ -189,6 +190,7 @@ span {
 #wall {
   top: 0px;
   height: 260px;
+  width: 960px;
   z-index: 0;
 }
 #sides {

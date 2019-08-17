@@ -107,7 +107,7 @@ $.Util.renderPerson = function(w, h, direction, c, face, clothes, hat, pack) {
   
   if (pack) {
     if (direction == 2) {
-      ctx.fillStyle = 'red';
+      ctx.fillStyle = pack;
       ctx.beginPath();
       ctx.rect((w / 2) - packWidth, packStart, packWidth * 2, headSize);
       ctx.closePath();

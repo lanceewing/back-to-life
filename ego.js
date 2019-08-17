@@ -9,7 +9,8 @@ class Ego extends Actor {
      * @extends Actor
      */
     constructor() {
-        super(50, 150, 'grey', 0.95, 5, 'white', 'grey', 'red');
+        //super(50, 150, 'grey', 0.95, 5, 'white', 'grey', 'red');
+        super(50, 150, 'black', 0.95, 10, 'black', null, 'black');
         this.elem.classList.add('ego');
         this.elem.id = 'me';
         this.setDirection(Sprite.OUT);

@@ -104,8 +104,11 @@ $.Game = {
       //$.scaleX = window.innerHeight / $.wrap.offsetWidth;
       //$.scaleY = window.innerWidth / $.wrap.offsetHeight;
       //$.wrap.style.transform = "rotate(90deg) scale3d(" + $.scaleX + ", " + $.scaleY + ", 1)";
+      
       $.wrap.style.transform = "scale3d(" + $.scaleX + ", " + $.scaleY + ", 1)";
-      $.screen.style.width = window.innerWidth + "px";
+      $.wrap.style.marginLeft = ((window.innerWidth - 960) / 2) + "px";
+      
+      $.screen.style.width = (window.innerWidth > 960? window.innerWidth : 960) + "px";
     },
 
     /**
@@ -129,11 +132,12 @@ $.Game = {
       $.controls = document.getElementById('controls');
       
       this.fillScreen();
+      
+      window.addEventListener("resize", function() { $.Game.fillScreen(); }); 
 
       // Render the wall texture.
       this.wall = this.renderWall();
-      this.wallCtx = $.wall.getContext('2d');
-      this.wallCtx.drawImage(this.wall, 0, 0);
+      $.wall.style.backgroundImage = 'url(' + this.wall.toDataURL("image/png") + ')';
       
       // Register click event listeners for item list arrow buttons.
       document.getElementById("up").addEventListener("click", function(){
