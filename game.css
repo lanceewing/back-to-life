@@ -20,29 +20,26 @@ span {
   display: inline-block;
 }
 .drain {
-  background-image: linear-gradient(90deg, rgb(191, 234, 249) 45%, rgba(154, 141, 141, 0.3) 65%);
+  background-image: linear-gradient(90deg, rgb(22, 22, 22) 45%, rgba(154, 141, 141, 0.3) 65%);
   background-size: 19px 50px;
   border-top-left-radius: 90px;
   border-top-right-radius: 90px;
-  height: 27px;
+  height: 20px;
   width: 100px;
   z-index: 15;
-  top: 20px;;
-  box-shadow: rgba(234, 234, 231, 0.5) 0px 0px 120px 35px, rgb(123, 106, 106) 0px 0px 4px 4px;
+  top: 350px;;
+  /*box-shadow: inset rgba(15, 15, 15, 0.5) 0px 0px 120px 35px, inset rgb(15, 15, 15) 0px 0px 4px 4px;*/
+  box-shadow: inset rgb(15, 15, 15) 0px 0px 2px 3px;
 }
 .door {
   background-image: linear-gradient(#000, #333);
   border-top-left-radius: 90px;
   border-top-right-radius: 90px;
-  height: 169px;
+  height: 158px;
   width: 100px;
   z-index: 15;
   top: 93px;
   box-shadow: #333 0px 0px 4px 4px;
-}
-.open {
-	background-image: none;
-  background-color: rgb(191, 234, 249);
 }
 #status {
 	background-color: #fff;
@@ -142,7 +139,7 @@ span {
 #bricks {
   top: 50px;
   width: 960px;
-  height: 210px;
+  height: 209px;
   z-index: 5;
 }
 .bricks {
@@ -155,6 +152,20 @@ span {
   background-size: 58px 58px;	
   background-position: 0px 2px, 4px 35px, 29px 31px, 34px 6px;
 }
+.outside #bricks {
+  top: -8px;
+  height: 263px;
+}
+#bricks.left {
+  left: 100px;
+}
+#bricks.leftright {
+  left: 100px;
+  width: 758px;
+}
+#bricks.right {
+  width: 860px;
+}
 @keyframes movewater {
   0% {
     left: -110px;
@@ -163,10 +174,10 @@ span {
     left: 0px;
   }
 }
-#edge {
+#curb {
 	width: 960px;
 	height: 30px;
-	background-color: #444;
+	background-color: rgba(68, 68, 68, 0.2);
 	bottom: 60px;
 	z-index: 1;
 	box-shadow: #111 0px 10px 25px 0px;
@@ -187,16 +198,60 @@ span {
   animation-iteration-count: infinite;
   animation-timing-function: linear;
 }
+#road {
+  width: 1070px;
+  height: 90px;
+  bottom: 0px;
+  z-index: 0;
+}
 #wall {
   top: 0px;
-  height: 260px;
+  height: 259px;
   width: 960px;
   z-index: 0;
 }
+.left.path {
+  left: 0px;
+  width: 0;
+  height: 0;
+  top: 130px;
+  border-top: 125px solid rgba(0, 0, 0, 0.3);
+  border-right: 100px solid transparent;
+}
+.right.path {
+  left: 860px;
+  width: 0;
+  height: 0;
+  top: 130px;
+  border-top: 125px solid rgba(0, 0, 0, 0.3);
+  border-left: 100px solid transparent;
+}
+.path {
+  width: 100px;
+  height: 255px;
+  top: 0px;
+  z-index: 10;
+  /*background-color: rgba(51, 51, 51); /*, 0.2);*/
+}
+#sky {
+  background: linear-gradient(
+    hsl(0, 70%, 5%) 0%, 
+    hsl(0, 70%, 20%) 50%);
+  height: 130px;
+  width: 960px;
+  z-index: 0;
+}
+#buildings {
+  height: 50px;
+  width: 960px;
+  top: 80px;
+  background-color: black;
+}
+/*
 #sides {
 	top: 0px;
 	left: -50px;
-	height: 430px;
+	height: 260px;
   width: 1060px;
 	border-top-right-radius: 60px;
 	border-top-left-radius: 60px;
@@ -212,6 +267,7 @@ span {
 .left.right {
 	 box-shadow: #000 -85px 0 0px 0px inset, #000 85px 0 0px 0px inset;
 }
+*/
 .bubble {
 	font-size: smaller;
   padding: 15px;

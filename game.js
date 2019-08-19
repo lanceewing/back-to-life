@@ -30,19 +30,31 @@ $.Game = {
       ['Underworld', 0, '255,0,0', '207,16,32']         // Red tint, lava
     ],
     
+    // /**
+    //  * Rooms have a region type, left exit, left door, right door, right exit (other types of 
+    //  * door are handled as props), name override.
+    //  */
+    // rooms: [
+    //   [0,       , [2, 4], ,             , ''],  // [1] Entrance room.
+    //   [0,       ,       , [3, 1], [1, 2], ''],  // [2]
+    //   [0, [2, 3], [5, 4], [6, 1], [4, 1], ''],  // [3]
+    //   [4, [3, 4],       ,       ,       , ''],  // [4] Grim reaper's room.
+    //   [0, [7, 2],       ,       , [3, 2], ''],  // [5] Long hall
+    //   [0, [3, 3],       ,       ,       , ''],  // [6]
+    //   [1,       , [5, 1],       , [8, 1], ''],  // [7]
+    //   [1, [7, 4],       ,       ,       , '']   // [8] Homeless man's cave
+    // ],
+
     /**
-     * Rooms have a region type, left exit, left door, right door, right exit (other types of 
-     * door are handled as props), name override.
+     * Rooms have a region type (inside or outside), left exit, left path, left door, right door,
+     * right path, right exit, down exit.
      */
     rooms: [
-      [0,       , [2, 4], ,             , ''],  // [1] Entrance room.
-      [0,       ,       , [3, 1], [1, 2], ''],  // [2]
-      [0, [2, 3], [5, 4], [6, 1], [4, 1], ''],  // [3]
-      [4, [3, 4],       ,       ,       , ''],  // [4] Grim reaper's room.
-      [0, [7, 2],       ,       , [3, 2], ''],  // [5] Long hall
-      [0, [3, 3],       ,       ,       , ''],  // [6]
-      [1,       , [5, 1],       , [8, 1], ''],  // [7]
-      [1, [7, 4],       ,       ,       , '']   // [8] Homeless man's cave
+      [0,   ,  2,  3,   ,  4,   ,  5 ],
+      [0,   ,   ,   ,   ,   ,  1,    ],
+      [1,   ,   ,   ,   ,   ,   ,  1 ],
+      [0,  1,   ,   ,   ,   ,   ,    ],
+      [0,   ,   ,   ,   ,   ,   ,  1 ]
     ],
     
     props: [
@@ -118,10 +130,10 @@ $.Game = {
       // Get a reference to each of the elements in the DOM that we'll need to update.
       $.wrap = document.getElementById('wrap');
       $.screen = document.getElementById('screen');
-      $.wall = document.getElementById('wall');
+      //$.wall = document.getElementById('wall');
       $.bricks = document.getElementById('bricks');
-      $.sides = document.getElementById('sides');
-      $.water = document.getElementById('water');
+      //$.sides = document.getElementById('sides');
+      //$.water = document.getElementById('water');
       $.region = document.getElementById('region');
       $.doors = document.getElementsByClassName('door');
       $.drains = document.getElementsByClassName('drain');
@@ -137,7 +149,8 @@ $.Game = {
 
       // Render the wall texture.
       this.wall = this.renderWall();
-      $.wall.style.backgroundImage = 'url(' + this.wall.toDataURL("image/png") + ')';
+      $.screen.style.backgroundImage = 'url(' + this.wall.toDataURL("image/png") + ')';
+      
       
       // Register click event listeners for item list arrow buttons.
       document.getElementById("up").addEventListener("click", function(){
@@ -350,36 +363,38 @@ $.Game = {
       var roomData = this.rooms[this.room - 1];
       this.region = this.regions[roomData[0]];
       
-      // Room 1 has an open drain for entry and exit.
-      if (this.room == 1) {
-        $.drains[2].className = 'open drain';
-      } else {
-        $.drains[2].className = 'drain';
-      }
-      
       // Draw the bricks if the region has them.
+      $.bricks.className = '';
       if (this.region[1]) {
         $.bricks.classList.add('bricks');
-      } else {
-        $.bricks.classList.remove('bricks');
       }
+
+      // TODO: Add left and right paths depending on available directions.
+      let pathClass = '';
+      if (roomData[2]) {
+        pathClass += 'left';
+      }
+      if (roomData[5]) {
+        pathClass += 'right';
+      }
+      $.bricks.classList.add(pathClass);
       
       // Room colouring
-      $.wall.style.backgroundColor = 'rgb(' + this.region[2] + ')';
-      $.water.style.backgroundColor = 'rgb(' + this.region[3] + ')';
+      //$.wall.style.backgroundColor = 'rgb(' + this.region[2] + ')';
+      //$.water.style.backgroundColor = 'rgb(' + this.region[3] + ')';
       
-      // Sides
-      $.sides.className = "";
-      if (!roomData[1]) {
-        $.sides.classList.add('left');
-      }
-      if (!roomData[4]) {
-        $.sides.classList.add('right');
-      }
-      
+      // // Sides
+      // $.sides.className = "";
+      // if (!roomData[1]) {
+      //   $.sides.classList.add('left');
+      // }
+      // if (!roomData[4]) {
+      //   $.sides.classList.add('right');
+      // }
+ 
       // Doors (display none, display block)
-      $.doors[0].style.display = (roomData[2]? 'block' : 'none');
-      $.doors[1].style.display = (roomData[3]? 'block' : 'none');
+      $.doors[0].style.display = (roomData[3]? 'block' : 'none');
+      $.doors[1].style.display = (roomData[4]? 'block' : 'none');
       
       // Add props
       for (var i=0; i<this.props.length; i++) {
