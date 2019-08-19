@@ -51,9 +51,9 @@ $.Game = {
      */
     rooms: [
       [0,   ,  2,  3,   ,  4,   ,  5 ],
-      [0,   ,   ,   ,   ,   ,  1,    ],
-      [1,   ,   ,   ,   ,   ,   ,  1 ],
-      [0,  1,   ,   ,   ,   ,   ,    ],
+      [0,   ,   ,   ,   ,  1,   ,    ],
+      [1,   ,   ,   ,  1,   ,   ,    ],
+      [0,   ,  1,   ,   ,   ,   ,    ],
       [0,   ,   ,   ,   ,   ,   ,  1 ]
     ],
     
@@ -137,6 +137,7 @@ $.Game = {
       $.region = document.getElementById('region');
       $.doors = document.getElementsByClassName('door');
       $.drains = document.getElementsByClassName('drain');
+      $.paths = document.getElementsByClassName('path');
       $.time = document.getElementById('time');
       $.score = document.getElementById('score');
       $.items = document.getElementById('itemlist');
@@ -377,8 +378,12 @@ $.Game = {
       if (roomData[5]) {
         pathClass += 'right';
       }
-      $.bricks.classList.add(pathClass);
-      
+      if (pathClass) {
+        $.bricks.classList.add(pathClass);
+      }
+      $.paths[0].style.display = (roomData[2]? 'block' : 'none');
+      $.paths[1].style.display = (roomData[5]? 'block' : 'none');
+
       // Room colouring
       //$.wall.style.backgroundColor = 'rgb(' + this.region[2] + ')';
       //$.water.style.backgroundColor = 'rgb(' + this.region[3] + ')';

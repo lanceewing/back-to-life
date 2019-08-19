@@ -156,12 +156,12 @@ class Sprite extends Obj {
                 if ($.Game.userInput) {
                     // Check whether a room edge has been hit.
                     if (x < 0) edge = 1;
-                    if ((x + this.width) > 960) edge = 4;
+                    if ((x + this.width) > 960) edge = 6;
                     // This edge number is simply to stop ego. He won't leave the room.
-                    if (z > 667) edge = 5;
+                    if (z > 667) edge = 10;
                 }
                 
-                // Check whether ego has gone through a door.
+                // Check whether ego has walked to a door or path..
                 if (z < 530) {
                     // We stop user input already and allow the user to walk a bit further.
                     $.Game.userInput = false;
@@ -170,8 +170,8 @@ class Sprite extends Obj {
                 }
                 if (z < 500) {
                     // Ego has now reached the horizon, so time for a room change. The x value
-                    // tells us which door it was.
-                    edge = (x < 480? 2 : 3);
+                    // tells us which exit it was.
+                    edge = (x < 480? (x < 100? 2 : 3) : (x < 860? 4 : 5));
                 }
                 
                 // Increment the step size the step increment, capping at the max step.

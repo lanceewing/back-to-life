@@ -11,6 +11,8 @@ $.Logic = {
       case 'Walk to':
         switch (thing) {
           case 'door':
+          case 'left path':
+          case 'right path':
             $.ego.stop();
             // Walk to be in front of the door
             $.ego.moveTo(e.target.offsetLeft + (e.target.offsetWidth / 2), $.ego.z);

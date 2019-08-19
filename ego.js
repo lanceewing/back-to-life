@@ -10,7 +10,7 @@ class Ego extends Actor {
      */
     constructor() {
         //super(50, 150, 'grey', 0.95, 5, 'white', 'grey', 'red');
-        super(50, 150, 'black', 0.95, 10, 'black', null, 'black');
+        super(50, 150, 'black', 0.95, 5, 'black', null, 'black');
         this.elem.classList.add('ego');
         this.elem.id = 'me';
         this.setDirection(Sprite.OUT);
@@ -42,7 +42,7 @@ class Ego extends Actor {
             this.cell = 0;
             
             // Now check if there is a room on this edge.
-            if (edge < 5) {
+            if (edge < 10) {
                 let edgeData = $.Game.rooms[this.room - 1][edge];
                 if (edgeData) {
                     $.Game.userInput = false;
@@ -51,38 +51,54 @@ class Ego extends Actor {
                     this.hide();
                     
                     // Set the new room for ego.
-                    this.room = edgeData[0];
+                    this.room = edgeData;
                     
                     // Work out the new position for ego.
-                    switch (edgeData[1]) {
-                        case 1: // From the left edge of screen
-                            this.setPosition(0 - this.width * 2, this.y, 600);
-                            this.setDirection(Sprite.RIGHT);
-                            this.moveTo(this.width + 50, 600, function() {
+                    switch (edge) {
+                        case 1: // Hit left edge, so come in on right edge.
+                            this.setPosition(960 + this.width, this.y, 600);
+                            this.setDirection(Sprite.LEFT);
+                            this.moveTo(960 - this.width - 50, 600, function() {
                                 $.Game.userInput = true;
                             });
                             break;
-                        
-                        case 2: // From the left door
-                            this.setPosition(268, this.y, 500);
+
+                        case 2: // Hit left path, so come in from right path.
+                            this.setPosition(885, this.y, 500);
                             this.setDirection(Sprite.OUT);
-                            this.moveTo(293, 600, function() {
+                            this.moveTo(910, 600, function() {
                                 $.Game.userInput = true;
                             });
                             break;
-                        
-                        case 3: // From the right door
+
+                        case 3: // Hit left door, so come in through right door.
                             this.setPosition(645, this.y, 500);
                             this.setDirection(Sprite.OUT);
                             this.moveTo(670, 600, function() {
                                 $.Game.userInput = true;
                             });
                             break;
-                        
-                        case 4: // From the right edge of screen
-                            this.setPosition(960 + this.width, this.y, 600);
-                            this.setDirection(Sprite.LEFT);
-                            this.moveTo(960 - this.width - 50, 600, function() {
+
+                        case 4: // Hit right door, so come in through left door.
+                            this.setPosition(268, this.y, 500);
+                            this.setDirection(Sprite.OUT);
+                            this.moveTo(293, 600, function() {
+                                $.Game.userInput = true;
+                            });
+                            break;
+
+                        case 5: // Hit right path, so come in from left path.
+                            this.setPosition(25, this.y, 500);
+                            this.setDirection(Sprite.OUT);
+                            this.moveTo(50, 600, function() {
+                                $.Game.userInput = true;
+                            });
+                            break;
+
+                        case 6: // Hit right edge, so come in on left edge.
+                            this.setPosition(0 - this.width * 2, this.y, 600);
+                            this.setDirection(Sprite.RIGHT);
+                            this.moveTo(this.width + 50, 600, function() {
                                 $.Game.userInput = true;
                             });
                             break;
