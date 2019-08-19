@@ -107,6 +107,7 @@ class Actor extends Sprite {
      * Updates the Actor's position based on its current heading and destination point.
      */
     update() {
+      // Only update the Actor if it is currently on screen.
       if (this.elem.style.display == 'block') {
         // Mask out left/right/in/out but retain the current jumping directions.
         let direction;

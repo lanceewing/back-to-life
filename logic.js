@@ -14,10 +14,19 @@ $.Logic = {
           case 'left path':
           case 'right path':
             $.ego.stop();
-            // Walk to be in front of the door
+            // Walk to be in front of the door/path.
             $.ego.moveTo(e.target.offsetLeft + (e.target.offsetWidth / 2), $.ego.z);
-            // Now walk through the door.
+            // Now walk through the door/path.
             $.ego.moveTo(e.target.offsetLeft + (e.target.offsetWidth / 2), e.target.offsetTop);
+            break;
+
+          case 'road':
+            $.Game.userInput = false;
+            $.ego.stop();
+            $.ego.moveTo((e.pageX / $.scaleX), ((e.pageY / $.scaleY) - 27) * 2, function() {
+              $.ego.moveTo($.ego.x, 1000);
+            });
+            //$.ego.moveTo($.ego.x, 1000);
             break;
             
           case 'open drain':

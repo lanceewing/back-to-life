@@ -272,6 +272,9 @@ $.Game = {
           $.Game.newRoom();
         }, 200);
       }
+
+      // Update cursor.
+      $.wrap.style.cursor = ($.Game.userInput? 'crosshair' : 'wait');
     },
     
     /**

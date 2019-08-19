@@ -102,6 +102,13 @@ class Ego extends Actor {
                                 $.Game.userInput = true;
                             });
                             break;
+
+                        case 7: // Hit road edge, so come in at road edge.
+                            this.setDirection(Sprite.IN);
+                            this.moveTo($.ego.x, 600, function() {
+                                $.Game.userInput = true;
+                            });
+                            break;
                     }
                     
                     this.step = 1;

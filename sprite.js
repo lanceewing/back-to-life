@@ -159,6 +159,14 @@ class Sprite extends Obj {
                     if ((x + this.width) > 960) edge = 6;
                     // This edge number is simply to stop ego. He won't leave the room.
                     if (z > 667) edge = 10;
+                } else {
+                    // Handle curb jump.
+                    if ((z > 680) && (z < 740)) {
+                        z = (this.direction == Sprite.OUT? 740 : 680);
+                    }
+                    if (z > 950) {
+                        edge = 7;
+                    }
                 }
                 
                 // Check whether ego has walked to a door or path..
