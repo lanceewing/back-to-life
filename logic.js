@@ -125,6 +125,10 @@ $.Logic = {
               $.ego.say("Someone must have dropped their book down the drain.", 300);
             }
             break;
+
+          case 'sign':
+            $.ego.say("Its a street sign that says '" + $.sign.innerHTML + "'", 200);
+            break;
             
           default:
             $.ego.say("No phone there.", 190);

@@ -57,6 +57,74 @@ $.Game = {
       [0,   ,   ,   ,   ,   ,   ,  1 ]
     ],
     
+
+    
+    // TODO: Remove. This generation isn't going to work.
+    // /**
+    //  * Street map of the city from which the rooms are generated.
+    //  */
+    // map:  '####################'
+    //     + '#                  #'
+    //     + '# ## ### ###########'
+    //     + '# ## ### ###########'
+    //     + '# ##     ###########'
+    //     + '# #### #############'
+    //     + '# #### #############'
+    //     + '#      #############'
+    //     + '# ##################'
+    //     + '# ##################'
+    //     + '# ##################'
+    //     + '# ##################'
+    //     + '####################'
+    //     + '####################'
+    //     + '####################'
+    //     + '####################'
+    //     + '####################'
+    //     + '####################'
+    //     + '####################'
+    //     + '####################'
+    //     ,
+
+    // /**
+    //  * 
+    //  * @param {*} x 
+    //  * @param {*} y 
+    //  */
+    // getBlockAt: function(x, y) {
+    //   return this.map[(~~((y + 20) % 20)) * 20 + (~~((x + 20) % 20))];
+    // },
+
+    // /**
+    //  * 
+    //  */
+    // buildRooms: function() {
+    //   let lastBlock = null;
+
+    //   for (let y = 0; y < 20; y++) {
+    //     for (let x = 0; x < 20; x++) {
+    //       let block = this.getBlockAt(x, y);
+
+    //       let topBlock = this.getBlockAt(x, y - 1);
+    //       let leftBlock = this.getBlockAt(x - 1, y);
+    //       let rightBlock = this.getBlockAt(x + 1, y);
+    //       let bottomBlock = this.getBlockAt(x, y + 1);
+    //       let bottomRightBlock = this.getBlockAt(x + 1, y + 1);
+    //       let topRightBlock = this.getBlockAt(x + 1, y - 1);
+    //       let topLeftBlock = this.getBlockAt(x - 1, y - 1);
+    //       let bottomLeftBlock = this.getBlockAt(x - 1, y + 1);
+
+    //       if (block == ' ') {
+
+
+
+    //       }
+    //       else if (block == '#') {
+
+    //       }
+    //     }
+    //   }
+    // },
+
     props: [
       
       // Room#, type, name, width, height, x, y, element reference
@@ -108,18 +176,17 @@ $.Game = {
     gameOver: false,
     
     score: 0,
+
+    time: 2030,
     
+    /**
+     * Scales the screen div to fit the whole screen.
+     */
     fillScreen: function() {
       $.scaleX = window.innerWidth / $.wrap.offsetWidth;
       $.scaleY = window.innerHeight / $.wrap.offsetHeight;
-      // TODO: Remove. Experimental rotation test.
-      //$.scaleX = window.innerHeight / $.wrap.offsetWidth;
-      //$.scaleY = window.innerWidth / $.wrap.offsetHeight;
-      //$.wrap.style.transform = "rotate(90deg) scale3d(" + $.scaleX + ", " + $.scaleY + ", 1)";
-      
       $.wrap.style.transform = "scale3d(" + $.scaleX + ", " + $.scaleY + ", 1)";
       $.wrap.style.marginLeft = ((window.innerWidth - 960) / 2) + "px";
-      
       $.screen.style.width = (window.innerWidth > 960? window.innerWidth : 960) + "px";
     },
 
@@ -143,6 +210,7 @@ $.Game = {
       $.items = document.getElementById('itemlist');
       $.sentence = document.getElementById('sentence');
       $.controls = document.getElementById('controls');
+      $.sign = document.getElementById('sign');
       
       this.fillScreen();
       
@@ -182,6 +250,8 @@ $.Game = {
      * the initial start and then subsequent restarts. 
      */
     init: function() {
+      this.setTime(2030);
+
       // For restarts, we'll need to remove the objects from the screen.
       if (this.objs) {
         for (var i=0; i<this.objs.length; i++) {
@@ -334,6 +404,15 @@ $.Game = {
     },
     
     /**
+     * Sets the current year in time.
+     * 
+     * @param {*} time The current year in time.
+     */
+    setTime: function(time) {
+      $.time.innerHTML = '' + time + ' AD';
+    },
+
+    /**
      * Adds the given points to the current score.
      */
     addToScore: function(points) {
@@ -404,6 +483,11 @@ $.Game = {
       $.doors[0].style.display = (roomData[3]? 'block' : 'none');
       $.doors[1].style.display = (roomData[4]? 'block' : 'none');
       
+      // Set the street sign text.
+      // TODO: Hide this when there isn't a corner.
+      // TODO: Avenue vs Street
+      $.sign.innerHTML = this.room + this.nth(this.room) + ' Avenue';
+
       // Add props
       for (var i=0; i<this.props.length; i++) {
         var prop = this.props[i];
@@ -424,6 +508,10 @@ $.Game = {
       $.ego.show();
     },
     
+    nth: function(n) { 
+      return["st","nd","rd"][((n+90)%100-10)%10-1]||"th";
+    },
+
     /**
      * Adds the given prop to the current room screen.
      */
