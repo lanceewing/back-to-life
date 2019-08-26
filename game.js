@@ -500,9 +500,9 @@ $.Game = {
       
       // Draw the bricks if the region has them.
       $.bricks.className = '';
-      if (this.region[1]) {
+      //if (this.region[1]) {
         $.bricks.classList.add('bricks');
-      }
+      //}
 
       // TODO: Add left and right paths depending on available directions.
       let pathClass = '';
@@ -538,7 +538,14 @@ $.Game = {
       // Set the street sign text.
       // TODO: Hide this when there isn't a corner.
       // TODO: Avenue vs Street
-      $.sign.innerHTML = this.room + this.nth(this.room) + ' Avenue';
+
+      // *  bits 0-2: street/ave number
+      // *  bit  3  : 0=street, 1=avenue
+      // *  bits 4-6: wall colour
+      // *  bit  7  : inside/outside
+      let streetNum = (roomData[0] & 0x07);
+      let streetType = (roomData[0] & 0x08)? ' Avenue' : ' Street';
+      $.sign.innerHTML = streetNum + this.nth(streetNum) + streetType;
 
       // Add props
       for (var i=0; i<this.props.length; i++) {
