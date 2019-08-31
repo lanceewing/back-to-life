@@ -4,15 +4,12 @@ class Ego extends Actor {
      * Creates a new Ego. This is the main character whom the player controls. The
      * name originates with the old Sierra On-Line 3D animated adventure games. There
      * should be only one instance of this class.
-     * 
-     * @constructor
-     * @extends Actor
      */
     constructor() {
-        //super(50, 150, 'grey', 0.95, 5, 'white', 'grey', 'red');
         super(50, 150, 'black', 0.95, 5, 'black', null, 'black');
         this.elem.classList.add('ego');
         this.elem.id = 'me';
+        this.nesw = 2;
         this.setDirection(Sprite.OUT);
     }
 
@@ -69,6 +66,7 @@ class Ego extends Actor {
                             this.moveTo(910, 600, function() {
                                 $.Game.userInput = true;
                             });
+                            this.nesw = ((this.nesw + 1) & 0x03);
                             break;
 
                         case 3: // Hit left door, so come in through right door.
@@ -93,6 +91,7 @@ class Ego extends Actor {
                             this.moveTo(50, 600, function() {
                                 $.Game.userInput = true;
                             });
+                            this.nesw = ((this.nesw - 1) & 0x03);
                             break;
 
                         case 6: // Hit right edge, so come in on left edge.
@@ -108,6 +107,7 @@ class Ego extends Actor {
                             this.moveTo($.ego.x, 600, function() {
                                 $.Game.userInput = true;
                             });
+                            this.nesw = ((this.nesw + 2) & 0x03);
                             break;
                     }
                     
