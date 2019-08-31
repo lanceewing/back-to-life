@@ -1,3 +1,5 @@
+let $ = {};
+
 /** 
  * @namespace Holds utility functions.
  */
