@@ -28,7 +28,6 @@ span {
   width: 100px;
   z-index: 15;
   top: 350px;;
-  /*box-shadow: inset rgba(15, 15, 15, 0.5) 0px 0px 120px 35px, inset rgb(15, 15, 15) 0px 0px 4px 4px;*/
   box-shadow: inset rgb(15, 15, 15) 0px 0px 2px 3px;
 }
 .door {
@@ -259,7 +258,12 @@ span {
   font-family: Verdana, sans-serif;
   font-size: 15px;
 }
-
+#sign.right {
+  left: 730px;
+}
+#sign.leftright {
+  left: 430px;
+}
 /*
 #sides {
 	top: 0px;
@@ -326,4 +330,25 @@ span {
 #book {
 	background-color: #60447b;
   border: 2px solid black;
+}
+.b1 {
+  background-color: rgba(55, 0, 0, 0.3);
+}
+.b2 {
+  background-color: rgba(25,16,0,0.5);
+}
+.b3 {
+  background-color: rgba(0,0,0,0.8);
+}
+.b4 {
+  background-color: rgba(0,19,35,0.3);
+}
+#crossing {
+  bottom: 15px;
+  left: 260px;
+  border-bottom: 28px solid rgba(255,255,255,0.1);
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  height: 0;
+  width: 385px;
 }
