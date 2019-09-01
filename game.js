@@ -112,7 +112,7 @@ $.Game = {
       // Seventh block.
       [0x0B,   , 54,   ,   , 56,   , 16 ],  // 53
       [0x03,   , 55,   ,   , 53,   , 62 ],  // 54
-      [0x0C,   , 56,   ,   , 54,   , 73 ],  // 55
+      [0x0C,   , 56,999,   , 54,   , 73 ],  // 55
       [0x02,   , 53,   ,   , 55,   , 49 ],  // 56
 
       // Eighth block.
@@ -238,6 +238,10 @@ $.Game = {
       $.wrap.style.transform = "scale3d(" + $.scaleX + ", " + $.scaleY + ", 1)";
       $.wrap.style.marginLeft = ((window.innerWidth - 960) / 2) + "px";
       $.screen.style.width = (window.innerWidth > 960? window.innerWidth : 960) + "px";
+      // TODO: Can only be invoked by a user gesture, similar to playing sound.
+      //if (document.fullscreenEnabled) {
+      //  document.documentElement.requestFullscreen();
+      //}
     },
 
     /**
@@ -247,10 +251,7 @@ $.Game = {
       // Get a reference to each of the elements in the DOM that we'll need to update.
       $.wrap = document.getElementById('wrap');
       $.screen = document.getElementById('screen');
-      //$.wall = document.getElementById('wall');
       $.bricks = document.getElementById('bricks');
-      //$.sides = document.getElementById('sides');
-      //$.water = document.getElementById('water');
       $.region = document.getElementById('region');
       $.doors = document.getElementsByClassName('door');
       $.drains = document.getElementsByClassName('drain');
@@ -261,6 +262,7 @@ $.Game = {
       $.sentence = document.getElementById('sentence');
       $.controls = document.getElementById('controls');
       $.sign = document.getElementById('sign');
+      $.crossing = document.getElementById('crossing');
       
       this.fillScreen();
 
@@ -539,6 +541,9 @@ $.Game = {
       $.doors[0].style.display = (roomData[3]? 'block' : 'none');
       $.doors[1].style.display = (roomData[4]? 'block' : 'none');
       
+      // Crossing (display none, display block)
+      $.crossing.style.display = (roomData[7]? 'block' : 'none');
+
       // Set the street sign text.
       // *  bits 0-2: street/ave number
       // *  bit  3  : 0=street, 1=avenue
@@ -547,6 +552,7 @@ $.Game = {
       let streetNum = (roomData[0] & 0x07);
       let streetType = ((roomData[0] & 0x08)? ' Avenue ' : ' Street ') + "NESW".charAt($.ego.nesw);
       $.sign.innerHTML = (pathClass? streetNum + this.nth(streetNum) + streetType : '');
+      $.sign.style.display = (pathClass? 'block' : 'none');
 
       // Add props
       for (var i=0; i<this.props.length; i++) {
@@ -639,7 +645,8 @@ $.Game = {
         $.Game.thing = '';
       };
       elem.onclick = function(e) {
-        $.Game.thing = (e.target.id? e.target.id : e.target.className);
+        // TODO: Fallback to parent is experimental.
+        $.Game.thing = (e.target.id? e.target.id : (e.target.className? e.target.className : e.target.parentElement.className));
         $.Game.processCommand(e);
       };
     },

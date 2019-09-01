@@ -21,12 +21,15 @@ $.Logic = {
             break;
 
           case 'road':
+            $.ego.say("I should use the pedestrian crossing.", 220);
+            break;
+
+          case 'crossing':
             $.Game.userInput = false;
             $.ego.stop();
             $.ego.moveTo((e.pageX / $.scaleX), ((e.pageY / $.scaleY) - 27) * 2, function() {
               $.ego.moveTo($.ego.x, 1000);
             });
-            //$.ego.moveTo($.ego.x, 1000);
             break;
             
           case 'open drain':
@@ -65,6 +68,11 @@ $.Logic = {
               $.ego.say("Seems a bit high now.", 250);
             });
             break;
+
+          case 'left path':
+          case 'right path':
+            $.ego.say("The path makes a 90 degree turn around the corner.", 250);
+            break;
           
           case 'water':
             switch ($.Game.region[0]) {
@@ -96,12 +104,8 @@ $.Logic = {
             }
             break;
             
-          case 'chocolate coins':
-            $.ego.say("What? I get hungry.", 250);
-            break;
-            
           case 'me':
-            $.ego.say("I'm going for the gender neutral look.", 200);
+            $.ego.say("I'm the Grim Reaper.", 200);
             break;
             
           case 'reaper':
@@ -129,9 +133,13 @@ $.Logic = {
           case 'sign':
             $.ego.say("Its a street sign that says '" + $.sign.innerHTML + "'", 200);
             break;
+
+          case 'crossing':
+            $.ego.say("A safe way to cross the street, even for the Reaper.", 200);
+            break;
             
           default:
-            $.ego.say("No phone there.", 190);
+            $.ego.say("It's just a " + thing + ".", 190);
             break;
         
         }
@@ -192,7 +200,7 @@ $.Logic = {
             break;
             
           case 'door':
-            $.ego.say("It's already open.", 230);
+            e.target.style.transform = "rotateY(-45deg)";
             break;
             
           default:
@@ -204,7 +212,7 @@ $.Logic = {
       case 'Close':
         switch (thing) {
           case 'door':
-            $.ego.say("It's just a hole, not a proper door.", 220);
+            e.target.style.transform = "";
             break;
             
           default:
