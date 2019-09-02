@@ -112,7 +112,7 @@ $.Game = {
       // Seventh block.
       [0x0B,   , 54,   ,   , 56,   , 16 ],  // 53
       [0x03,   , 55,   ,   , 53,   , 62 ],  // 54
-      [0x0C,   , 56,999,   , 54,   , 73 ],  // 55
+      [0x0C,   , 56, 93,   , 54,   , 73 ],  // 55
       [0x02,   , 53,   ,   , 55,   , 49 ],  // 56
 
       // Eighth block.
@@ -158,6 +158,9 @@ $.Game = {
       [0x09, 91,   ,   ,   ,   , 89,    ],  // 90
       [0x09,   , 92,   ,   ,   , 90, 12 ],  // 91
       [0x02,   , 83,   ,   , 91,   , 67 ],  // 92
+
+      // Inside rooms.
+      [0x80,   ,   ,   , 55,   ,   ,    ],  // 93
     ],
 
     /**
@@ -251,7 +254,7 @@ $.Game = {
       // Get a reference to each of the elements in the DOM that we'll need to update.
       $.wrap = document.getElementById('wrap');
       $.screen = document.getElementById('screen');
-      $.bricks = document.getElementById('bricks');
+      $.wall = document.getElementById('wall');
       $.region = document.getElementById('region');
       $.doors = document.getElementsByClassName('door');
       $.drains = document.getElementsByClassName('drain');
@@ -500,14 +503,16 @@ $.Game = {
       var roomData = this.rooms[this.room - 1];
       this.region = this.regions[roomData[0]];
       
+      var inside = (roomData[0] & 0x80);
+
       // Draw the bricks if the region has them.
-      $.bricks.className = '';
-      //if (this.region[1]) {
-        $.bricks.classList.add('bricks');
-      //}
+      $.wall.className = '';
+      if (!inside) {
+        $.wall.classList.add('bricks');
+      }
 
       // TODO: This effect doesn't really work too well.
-      //$.bricks.classList.add('b' + ((roomData[0] & 0x70) >> 4));
+      //$.wall.classList.add('b' + ((roomData[0] & 0x70) >> 4));
 
       // TODO: Add left and right paths depending on available directions.
       let pathClass = '';
@@ -518,7 +523,7 @@ $.Game = {
         pathClass += 'right';
       }
       if (pathClass) {
-        $.bricks.classList.add(pathClass);
+        $.wall.classList.add(pathClass);
       }
       $.sign.className = pathClass;
       $.paths[0].style.display = (roomData[2]? 'block' : 'none');
@@ -541,6 +546,9 @@ $.Game = {
       $.doors[0].style.display = (roomData[3]? 'block' : 'none');
       $.doors[1].style.display = (roomData[4]? 'block' : 'none');
       
+
+      //activeDoor.children[0].style.transform = "rotateY(-120deg)";
+
       // Crossing (display none, display block)
       $.crossing.style.display = (roomData[7]? 'block' : 'none');
 

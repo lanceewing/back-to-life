@@ -5,12 +5,18 @@ $.Logic = {
 
   process: function(verb, cmd, thing, e) {
     var newCommand = cmd;
+    var activeDoor = ($.doors[0].style.display == 'block'? $.doors[0] : $.doors[1]);
 
     switch (verb) {
     
       case 'Walk to':
         switch (thing) {
           case 'door':
+            $.ego.moveTo(activeDoor.offsetLeft + (activeDoor.offsetWidth / 2), $.ego.z);
+            activeDoor.children[0].style.transform = "rotateY(-120deg)";
+            $.ego.moveTo(activeDoor.offsetLeft + (activeDoor.offsetWidth / 2), activeDoor.offsetTop);
+            break;
+
           case 'left path':
           case 'right path':
             $.ego.stop();
@@ -200,7 +206,10 @@ $.Logic = {
             break;
             
           case 'door':
-            e.target.style.transform = "rotateY(-45deg)";
+            // Walk to be in front of the door/path.
+            $.ego.moveTo(activeDoor.offsetLeft + (activeDoor.offsetWidth / 2), $.ego.z, function() {
+              activeDoor.children[0].style.transform = "rotateY(-45deg)";
+            });
             break;
             
           default:
@@ -212,7 +221,7 @@ $.Logic = {
       case 'Close':
         switch (thing) {
           case 'door':
-            e.target.style.transform = "";
+            activeDoor.children[0].style.transform = "";
             break;
             
           default:
