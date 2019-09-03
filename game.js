@@ -266,6 +266,7 @@ $.Game = {
       $.controls = document.getElementById('controls');
       $.sign = document.getElementById('sign');
       $.crossing = document.getElementById('crossing');
+      //$.curb = document.getElementById('curb');
       
       this.fillScreen();
 
@@ -504,12 +505,14 @@ $.Game = {
       this.region = this.regions[roomData[0]];
       
       var inside = (roomData[0] & 0x80);
+      $.screen.className = (inside? 'inside' : 'outside');
 
       // Draw the bricks if the region has them.
       $.wall.className = '';
+
       if (!inside) {
         $.wall.classList.add('bricks');
-      }
+      } 
 
       // TODO: This effect doesn't really work too well.
       //$.wall.classList.add('b' + ((roomData[0] & 0x70) >> 4));
@@ -545,9 +548,17 @@ $.Game = {
       // Doors (display none, display block)
       $.doors[0].style.display = (roomData[3]? 'block' : 'none');
       $.doors[1].style.display = (roomData[4]? 'block' : 'none');
-      
 
-      //activeDoor.children[0].style.transform = "rotateY(-120deg)";
+      // Only one of the doors is active.
+      $.activeDoor = ($.doors[0].style.display == 'block'? $.doors[0] : $.doors[1]);
+
+      if (inside)  {
+        $.activeDoor.children[0].style.transform = "rotateY(180deg)";
+        $.activeDoor.style.overflow = 'visible';
+      }
+      else {
+
+      }
 
       // Crossing (display none, display block)
       $.crossing.style.display = (roomData[7]? 'block' : 'none');
