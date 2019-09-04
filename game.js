@@ -501,16 +501,16 @@ $.Game = {
       }
       this.objs = [];
       
-      var roomData = this.rooms[this.room - 1];
-      this.region = this.regions[roomData[0]];
+      $.roomData = this.rooms[this.room - 1];
+      this.region = this.regions[$.roomData[0]];
       
-      var inside = (roomData[0] & 0x80);
-      $.screen.className = (inside? 'inside' : 'outside');
+      $.inside = ($.roomData[0] & 0x80);
+      $.screen.className = ($.inside? 'inside' : 'outside');
 
       // Draw the bricks if the region has them.
       $.wall.className = '';
 
-      if (!inside) {
+      if (!$.inside) {
         $.wall.classList.add('bricks');
       } 
 
@@ -519,18 +519,18 @@ $.Game = {
 
       // TODO: Add left and right paths depending on available directions.
       let pathClass = '';
-      if (roomData[2]) {
+      if ($.roomData[2]) {
         pathClass += 'left';
       }
-      if (roomData[5]) {
+      if ($.roomData[5]) {
         pathClass += 'right';
       }
       if (pathClass) {
         $.wall.classList.add(pathClass);
       }
       $.sign.className = pathClass;
-      $.paths[0].style.display = (roomData[2]? 'block' : 'none');
-      $.paths[1].style.display = (roomData[5]? 'block' : 'none');
+      $.paths[0].style.display = ($.roomData[2]? 'block' : 'none');
+      $.paths[1].style.display = ($.roomData[5]? 'block' : 'none');
 
       // Room colouring
       //$.wall.style.backgroundColor = 'rgb(' + this.region[2] + ')';
@@ -546,30 +546,32 @@ $.Game = {
       // }
  
       // Doors (display none, display block)
-      $.doors[0].style.display = (roomData[3]? 'block' : 'none');
-      $.doors[1].style.display = (roomData[4]? 'block' : 'none');
+      $.doors[0].style.display = ($.roomData[3]? 'block' : 'none');
+      $.doors[1].style.display = ($.roomData[4]? 'block' : 'none');
 
       // Only one of the doors is active.
       $.activeDoor = ($.doors[0].style.display == 'block'? $.doors[0] : $.doors[1]);
 
-      if (inside)  {
+      if ($.inside)  {
+        // Inside doors always start out open.
         $.activeDoor.children[0].style.transform = "rotateY(180deg)";
         $.activeDoor.style.overflow = 'visible';
+        $.roomData[8] = true;
       }
       else {
 
       }
 
       // Crossing (display none, display block)
-      $.crossing.style.display = (roomData[7]? 'block' : 'none');
+      $.crossing.style.display = ($.roomData[7]? 'block' : 'none');
 
       // Set the street sign text.
       // *  bits 0-2: street/ave number
       // *  bit  3  : 0=street, 1=avenue
       // *  bits 4-6: wall colour
       // *  bit  7  : inside/outside
-      let streetNum = (roomData[0] & 0x07);
-      let streetType = ((roomData[0] & 0x08)? ' Avenue ' : ' Street ') + "NESW".charAt($.ego.nesw);
+      let streetNum = ($.roomData[0] & 0x07);
+      let streetType = (($.roomData[0] & 0x08)? ' Avenue ' : ' Street ') + "NESW".charAt($.ego.nesw);
       $.sign.innerHTML = (pathClass? streetNum + this.nth(streetNum) + streetType : '');
       $.sign.style.display = (pathClass? 'block' : 'none');
 

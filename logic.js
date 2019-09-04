@@ -11,9 +11,16 @@ $.Logic = {
       case 'Walk to':
         switch (thing) {
           case 'door':
-            $.ego.moveTo($.activeDoor.offsetLeft + ($.activeDoor.offsetWidth / 2), $.ego.z);
-            $.activeDoor.children[0].style.transform = "rotateY(-120deg)";
-            $.ego.moveTo($.activeDoor.offsetLeft + ($.activeDoor.offsetWidth / 2), $.activeDoor.offsetTop);
+            if ($.roomData[8]) {
+              $.ego.moveTo($.activeDoor.offsetLeft + ($.activeDoor.offsetWidth / 2), $.ego.z, function() {
+                if (!$.inside) {
+                  $.activeDoor.children[0].style.transform = "rotateY(-120deg)";
+                }
+              });
+              $.ego.moveTo($.activeDoor.offsetLeft + ($.activeDoor.offsetWidth / 2), $.activeDoor.offsetTop);
+            } else {
+              $.ego.say("The door is closed.", 220);
+            }
             break;
 
           case 'left path':
@@ -207,7 +214,8 @@ $.Logic = {
           case 'door':
             // Walk to be in front of the door/path.
             $.ego.moveTo($.activeDoor.offsetLeft + ($.activeDoor.offsetWidth / 2), $.ego.z, function() {
-              $.activeDoor.children[0].style.transform = "rotateY(-45deg)";
+              $.activeDoor.children[0].style.transform = ($.inside? "rotateY(180deg)" : "rotateY(-45deg)");
+              $.roomData[8] = true;
             });
             break;
             
@@ -220,7 +228,15 @@ $.Logic = {
       case 'Close':
         switch (thing) {
           case 'door':
-            $.activeDoor.children[0].style.transform = "";
+            if ($.roomData[8]) {
+                $.ego.moveTo($.activeDoor.offsetLeft + ($.activeDoor.offsetWidth / 2), $.ego.z, function() {
+                $.activeDoor.children[0].style.transform = "";
+                $.roomData[8] = false;
+              });
+            }
+            else {
+              $.ego.say("It is already closed.", 220);
+            }
             break;
             
           default:

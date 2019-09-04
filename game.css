@@ -324,6 +324,10 @@ span {
   border-style: solid;
   border-color: #AD9E7B transparent;
 }
+.sprite {
+  /* Hack for Chrome, so that doors are not drawn on top of other sprites. */
+  transform: rotateY(0deg);
+}
 .actor:after {
   content: "";
   position: absolute;
