@@ -45,6 +45,10 @@ span {
   perspective: 350px;
   overflow: hidden;
 }
+.inside .door {
+  background-image: linear-gradient(#AD9E7B22 80%, #11111133 20%);
+  background-color: #ffffff44
+}
 .door div {
   transition: transform 0.5s;
   transform-style: preserve-3d;
