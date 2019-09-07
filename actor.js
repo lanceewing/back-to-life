@@ -1,10 +1,11 @@
 class Actor extends Sprite {
 
-    constructor(width, height, colour, texture, xzstep, face, hat, pack) {
+    constructor(width, height, colour, texture, xzstep, face, hat, pack, outline) {
         super(width, height, colour, texture, xzstep);
         this.face = face;
         this.hat = hat;
         this.pack = pack;
+        this.outline = outline;
         this.canvas = this.buildCanvas();
         let style = this.elem.style;
         style.backgroundImage = 'url(' + this.canvas.toDataURL("image/png") + ')';
@@ -22,7 +23,7 @@ class Actor extends Sprite {
         for (let c = 0; c < 3; c++) {
             for (let d = 0; d < 4; d++) {
                 ctx.drawImage(
-                    $.Util.renderPerson(this.width, this.width * 3, d, c, this.face, this.colour, this.hat, this.pack), 
+                    $.Util.renderPerson(this.width, this.width * 3, d, c, this.face, this.colour, this.hat, this.pack, this.outline), 
                         d * this.width, 
                         c * this.width * 3);
             }
@@ -150,5 +151,16 @@ class Actor extends Sprite {
         // Move Ego based on it's heading.
         if (this.heading !== null) this.move();
       }
+    }
+
+    /**
+     * Invoked when Ego has hit another Sprite.
+     * 
+     * @param obj The Sprite that Ego has hit.
+     */
+    hit(obj) {
+      // Reset the position to the last one that isn't touching another Sprite. Resetting
+      // the position prevents Ego from walking through obstacles. 
+      for (;this.reset() && this.touching(obj););
     }
 }

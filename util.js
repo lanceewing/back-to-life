@@ -43,12 +43,15 @@ $.Util.create2dContext = function(w, h) {
  * and three different cycles of moving in that direction. The parameters allow different
  * size persons to be drawn, of different clours, and with different features.
  */
-$.Util.renderPerson = function(w, h, direction, c, face, clothes, hat, pack) {
+$.Util.renderPerson = function(w, h, direction, c, face, clothes, hat, pack, line) {
   var ctx = $.Util.create2dContext(w, h + (w / 10));
 
   var ballSize = (w / 5);
   ctx.lineWidth = 4;
   ctx.lineJoin = 'round';
+  if (line) {
+    ctx.strokeStyle = line;
+  }
   
   // Hat ball on top
   if (hat) {

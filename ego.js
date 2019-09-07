@@ -12,17 +12,6 @@ class Ego extends Actor {
         this.nesw = 2;
         this.setDirection(Sprite.OUT);
     }
-
-    /**
-     * Invoked when Ego has hit another Sprite.
-     * 
-     * @param obj The Sprite that Ego has hit.
-     */
-    hit(obj) {
-        // Reset the position to the last one that isn't touching another Sprite. Resetting
-        // the position prevents Ego from walking through obstacles. 
-        for (;this.reset() && this.touching(obj););
-    }
   
     /**
      * Invoked by the move method when Ego has hit an edge. If the edge is the ground, then the

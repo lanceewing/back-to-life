@@ -332,7 +332,7 @@ span {
   /* Hack for Chrome, so that doors are not drawn on top of other sprites. */
   transform: rotateY(0deg);
 }
-.actor:after {
+.actor:after, .ghost:after {
   content: "";
   position: absolute;
   bottom: -5px;
@@ -379,4 +379,8 @@ span {
   border-right: 25px solid transparent;
   height: 0;
   width: 385px;
+}
+.ghost {
+  opacity: 0.3;
+  transform: rotateY(0deg);
 }

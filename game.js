@@ -216,6 +216,8 @@ $.Game = {
       */
     ],
     
+    actors: [],
+
     inventory: {},
     
     verb: 'Walk to',
@@ -326,6 +328,9 @@ $.Game = {
       $.ego.add();
       $.ego.setPosition(500, 0, 600);
       
+      // Add actors into the rooms.
+      this.addActors(500);
+
       // Starting inventory.
       this.getItem('time machine');
       
@@ -492,6 +497,32 @@ $.Game = {
     },
     
     /**
+     * Adds actors to the game. During the game, actors can be either a normal
+     * person, a zombie, or a ghost.
+     */
+    addActors: function(numOfActors) {
+      // Initialise actors for each outside room.
+      for (let a=0; a<=92; a++) {
+        this.actors[a] = [];
+      }
+
+      // Now random assign actors to a room.
+      for (let i=0; i<numOfActors; i++) {
+        // Reserve space for the actor, but don't create yet (lazy instantiation)
+        this.actors[this.random(92)].push(null);
+      }
+    },
+
+    /**
+     * Returns a random number from 0 (inclusive) to n (exclusive).
+     * 
+     * @param {*} n a random number from 0 (inclusive) to n (exclusive).
+     */
+    random: function(n) {
+      return Math.ceil(Math.random() * n);
+    },
+
+    /**
      * Invoked when Ego is entering a room.  
      */
     newRoom: function() {
@@ -576,7 +607,7 @@ $.Game = {
       $.sign.style.display = (pathClass? 'block' : 'none');
 
       // Add props
-      for (var i=0; i<this.props.length; i++) {
+      for (let i=0; i<this.props.length; i++) {
         var prop = this.props[i];
         
         // Is this prop in the current room?
@@ -585,9 +616,24 @@ $.Game = {
         }
       }
       
+      // Add actors.
+      if (this.room < 93) {
+        for (let i=0; i<this.actors[this.room].length; i++) {
+          let g = this.actors[this.room][i];
+          if (g == null) {
+            g = this.actors[this.room][i] = new Ghost();
+          }
+          g.add();
+          if (g.x == 0) {
+            g.setPosition(this.random(880) + 20, 0, this.random(120) + 540);
+          }
+          this.objs.push(g);
+        }
+      }
+
       // Add event listeners for objects in the room.
       var screenObjs = $.screen.children;
-      for (var i=0; i<screenObjs.length; i++) {
+      for (let i=0; i<screenObjs.length; i++) {
         this.addObjEventListeners(screenObjs[i]);
       }
       
