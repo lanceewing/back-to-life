@@ -18,22 +18,10 @@ $.Game = {
      * Whether or not the user currently has control.
      */
     userInput: true,
-    
+
     /**
-     * Regions have a name, wall type, wall colour, and water colour
+     * Last random number in the sequence. Always starts with same seed.
      */
-    regions: [
-      ['Sewers',     1, '108,141,36', '108,141,36'],    // Greenish tint, green water, bricks
-      ['Caves',      1, '0,0,0', '68,136,187'],         // Grey walls, blue water
-      ['Mines',      0, '#000000', ''],                 // Brown walls, no water
-      ['Catacombs',  1, '#000000', ''],                 // Grey walls, no water, bricks
-      ['Underworld', 0, '255,0,0', '207,16,32']         // Red tint, lava
-    ],
-
-    walls: [
-      '', '', '', '', '', '', '', ''
-    ],
-
     lastRandom: 481731,
 
     /**
@@ -48,7 +36,7 @@ $.Game = {
      */
     rooms: [
       // First block.
-      [0x19,   ,  2,999,   ,  8,   , 41 ],  // 1
+      [0x19,   ,  2,   ,   ,  8,   , 41 ],  // 1
       [0x11,  3,   ,   ,   ,  1,   , 22 ],  // 2
       [0x11,  4,   ,   ,   ,   ,  2, 21 ],  // 3
       [0x11,   ,  5,   ,   ,   ,  3, 20 ],  // 4
@@ -96,7 +84,7 @@ $.Game = {
       [0x31, 39,   ,   ,   ,   , 37, 72 ],  // 38
       [0x31, 40,   ,   ,   ,   , 38, 71 ],  // 39
       [0x31,   , 41,   ,   ,   , 39, 70 ],  // 40
-      [0x39,   , 42,   ,   , 40,   ,  1 ],  // 41
+      [0x39,   , 42, 93,   , 40,   ,  1 ],  // 41
       [0x34, 43,   ,   ,   , 41,   , 87 ],  // 42
       [0x34, 44,   ,   ,   ,   , 42,    ],  // 43
       [0x34, 45,   ,   ,   ,   , 43, 77 ],  // 44
@@ -114,7 +102,7 @@ $.Game = {
       // Seventh block.
       [0x0B,   , 54,   ,   , 56,   , 16 ],  // 53
       [0x03,   , 55,   ,   , 53,   , 62 ],  // 54
-      [0x0C,   , 56, 93,   , 54,   , 73 ],  // 55
+      [0x0C,   , 56,   ,   , 54,   , 73 ],  // 55
       [0x02,   , 53,   ,   , 55,   , 49 ],  // 56
 
       // Eighth block.
@@ -162,7 +150,7 @@ $.Game = {
       [0x02,   , 83,   ,   , 91,   , 67 ],  // 92
 
       // Inside rooms.
-      [0x80,   ,   ,   , 55,   ,   ,    ],  // 93
+      [0x80,   ,   ,   , 41,   ,   ,    ],  // 93
     ],
 
     /**
@@ -182,8 +170,11 @@ $.Game = {
 
     props: [
       
-      // Room#, type, name, width, height, x, y, element reference
+      // Room#, type, name, width, height, x, y, element reference, zindex, colour
       // types: 0 = actor, 1 = item, 2 = prop
+
+      [62, 1, 'green_key', 18, 3, 455, 540, null, 530, '#146b07'],
+
       [4, 0, 'reaper', 50, 150, 455, 540, null],
       
       [8, 0, 'man', 50, 150, 455, 540, null],
@@ -259,7 +250,6 @@ $.Game = {
       $.wrap = document.getElementById('wrap');
       $.screen = document.getElementById('screen');
       $.wall = document.getElementById('wall');
-      $.region = document.getElementById('region');
       $.doors = document.getElementsByClassName('door');
       $.drains = document.getElementsByClassName('drain');
       $.paths = document.getElementsByClassName('path');
@@ -323,7 +313,7 @@ $.Game = {
       
       // Set the room back to the start, and clear the object map.
       this.objs = [];
-      this.room = 55;
+      this.room = 41;
       
       // Create Ego (the main character) and add it to the screen.
       $.ego = new Ego();
@@ -516,20 +506,18 @@ $.Game = {
       }
 
       // No ghosts in starting room.
-      this.actors[55] = [];
+      this.actors[41] = [];
     },
 
     /**
-     * Returns a random number from 1 to n inclusive.
+     * Returns a random number from 1 to n inclusive. Deliberately uses same seed every run.
      * 
      * @param {*} n a random number from 1 to n inclusive.
      */
     random: function(n) {
       this.lastRandom = (this.lastRandom * 1664525 + 1013904223) & 0xFFFFFFFF;
       let num = (((this.lastRandom & 0xFFFF) % n) + 1);
-      //console.log("[" + n + "] " + num);
       return num;
-      //return Math.ceil(Math.random() * n);
     },
 
     /**
@@ -543,7 +531,6 @@ $.Game = {
       this.objs = [];
       
       $.roomData = this.rooms[this.room - 1];
-      this.region = this.regions[$.roomData[0]];
       
       $.inside = ($.roomData[0] & 0x80);
       $.screen.className = ($.inside? 'inside' : 'outside');
@@ -676,13 +663,23 @@ $.Game = {
             break;
             
           case 1: // Item
+            obj = new Obj(prop[3], prop[4], prop[8]);
+            obj.elem.style.backgroundColor = prop[9];
             break;
             
           case 2: // Prop
             obj = new Obj(prop[3], prop[4], prop[8]);
             break;
         }
-        
+
+        // If the id has a _ then use parts of id to add class names.
+        if (prop[2].indexOf('_') > -1) {
+          let parts = prop[2].split('_');
+          for (let i=0; i<parts.length; i++) {
+            obj.elem.classList.add(parts[i]);
+          }
+        }
+
         $[prop[2]] = obj;
         obj.elem.id = prop[2];
         obj.add();
@@ -704,14 +701,14 @@ $.Game = {
       // It is important that we don't use addEventListener in this case. We need to overwrite
       // the event handler on entering each room.
       elem.onmouseenter = function(e) {
-        $.Game.thing = (e.target.id? e.target.id : e.target.className);
+        $.Game.thing = (e.target.id? e.target.id.replace('_',' ') : e.target.className);
       };
       elem.onmouseleave = function(e) {
         $.Game.thing = '';
       };
       elem.onclick = function(e) {
         // TODO: Fallback to parent is experimental.
-        $.Game.thing = (e.target.id? e.target.id : (e.target.className? e.target.className : e.target.parentElement.className));
+        $.Game.thing = (e.target.id? e.target.id.replace('_',' ') : (e.target.className? e.target.className : e.target.parentElement.className));
         $.Game.processCommand(e);
       };
     },
