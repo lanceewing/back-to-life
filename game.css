@@ -383,4 +383,5 @@ span {
 .ghost {
   opacity: 0.3;
   transform: rotateY(0deg);
+  display: block;
 }

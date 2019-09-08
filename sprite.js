@@ -41,6 +41,10 @@ class Sprite extends Obj {
      * @returns {boolean} true if this Sprite is touching the given Sprite; otherwise false.
      */
     touching(obj, gap) {
+        // Some objects are not solid, e.g. ghosts.
+        if (this.ignore || obj.ignore) {
+            return false;
+        }
         if (obj) {
             let dx = this.cx - obj.cx;
             let dy = (this.cy - obj.cy);
@@ -171,10 +175,15 @@ class Sprite extends Obj {
                 
                 // Check whether ego has walked to a door or path..
                 if (z < 530) {
-                    // We stop user input already and allow the user to walk a bit further.
-                    $.Game.userInput = false;
-                    // Fading effect as ego leaves through the door.
-                    this.elem.style.opacity = 1.0 - ((530 - z) / 100);
+                    if (this == $.ego) {
+                        // We stop user input already and allow the user to walk a bit further.
+                        if (this == $.ego) $.Game.userInput = false;
+                        // Fading effect as ego leaves through the door.
+                        this.elem.style.opacity = 1.0 - ((530 - z) / 100);
+                    } else {
+                        // Non-ego actor has hit wall.
+                        edge = (x < 480? (x < 100? 2 : 3) : (x < 860? 4 : 5));
+                    }
                 }
                 if (z < 500) {
                     // Ego has now reached the horizon, so time for a room change. The x value
@@ -238,3 +247,5 @@ Sprite.LEFT  = 0x01;
 Sprite.RIGHT = 0x02;
 Sprite.IN    = 0x04;
 Sprite.OUT   = 0x08;
+
+Sprite.DIRS = [Sprite.LEFT, Sprite.RIGHT, Sprite.IN, Sprite.OUT];

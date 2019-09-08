@@ -34,6 +34,8 @@ $.Game = {
       '', '', '', '', '', '', '', ''
     ],
 
+    lastRandom: 481731,
+
     /**
      * Rooms have a region type (see blow), left exit, left path, left door, right door,
      * right path, right exit, down exit.
@@ -329,10 +331,11 @@ $.Game = {
       $.ego.setPosition(500, 0, 600);
       
       // Add actors into the rooms.
-      this.addActors(500);
+      this.addActors(200);
 
       // Starting inventory.
       this.getItem('time machine');
+      this.getItem('touch of death');
       
       // Enter the starting room.
       this.newRoom();
@@ -511,15 +514,22 @@ $.Game = {
         // Reserve space for the actor, but don't create yet (lazy instantiation)
         this.actors[this.random(92)].push(null);
       }
+
+      // No ghosts in starting room.
+      this.actors[55] = [];
     },
 
     /**
-     * Returns a random number from 0 (inclusive) to n (exclusive).
+     * Returns a random number from 1 to n inclusive.
      * 
-     * @param {*} n a random number from 0 (inclusive) to n (exclusive).
+     * @param {*} n a random number from 1 to n inclusive.
      */
     random: function(n) {
-      return Math.ceil(Math.random() * n);
+      this.lastRandom = (this.lastRandom * 1664525 + 1013904223) & 0xFFFFFFFF;
+      let num = (((this.lastRandom & 0xFFFF) % n) + 1);
+      //console.log("[" + n + "] " + num);
+      return num;
+      //return Math.ceil(Math.random() * n);
     },
 
     /**
@@ -562,19 +572,6 @@ $.Game = {
       $.sign.className = pathClass;
       $.paths[0].style.display = ($.roomData[2]? 'block' : 'none');
       $.paths[1].style.display = ($.roomData[5]? 'block' : 'none');
-
-      // Room colouring
-      //$.wall.style.backgroundColor = 'rgb(' + this.region[2] + ')';
-      //$.water.style.backgroundColor = 'rgb(' + this.region[3] + ')';
-      
-      // // Sides
-      // $.sides.className = "";
-      // if (!roomData[1]) {
-      //   $.sides.classList.add('left');
-      // }
-      // if (!roomData[4]) {
-      //   $.sides.classList.add('right');
-      // }
  
       // Doors (display none, display block)
       $.doors[0].style.display = ($.roomData[3]? 'block' : 'none');
@@ -621,7 +618,8 @@ $.Game = {
         for (let i=0; i<this.actors[this.room].length; i++) {
           let g = this.actors[this.room][i];
           if (g == null) {
-            g = this.actors[this.room][i] = new Ghost();
+            // One in three ghosts is a child ghost.
+            g = this.actors[this.room][i] = new Ghost((this.random(3) == 1? 35 : 48));
           }
           g.add();
           if (g.x == 0) {

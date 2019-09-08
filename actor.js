@@ -109,7 +109,8 @@ class Actor extends Sprite {
      */
     update() {
       // Only update the Actor if it is currently on screen.
-      if (this.elem.style.display == 'block') {
+      // TODO: if (this.elem.style.display == 'block') {
+      if (this.elem.style.display != 'none') {
         // Mask out left/right/in/out but retain the current jumping directions.
         let direction;
         
