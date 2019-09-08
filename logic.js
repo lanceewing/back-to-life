@@ -215,8 +215,12 @@ $.Logic = {
           case 'door':
             // Walk to be in front of the door/path.
             $.ego.moveTo($.activeDoor.offsetLeft + ($.activeDoor.offsetWidth / 2), $.ego.z, function() {
-              $.activeDoor.children[0].style.transform = ($.inside? "rotateY(180deg)" : "rotateY(-45deg)");
-              $.roomData[8] = true;
+              if ($.roomData[9] || $.inside) {  // Unlocked
+                $.activeDoor.children[0].style.transform = ($.inside? "rotateY(180deg)" : "rotateY(-45deg)");
+                $.roomData[8] = true;
+              } else {
+                $.ego.say("The door is locked.", 230);
+              }
             });
             break;
             
@@ -230,7 +234,7 @@ $.Logic = {
         switch (thing) {
           case 'door':
             if ($.roomData[8]) {
-                $.ego.moveTo($.activeDoor.offsetLeft + ($.activeDoor.offsetWidth / 2), $.ego.z, function() {
+              $.ego.moveTo($.activeDoor.offsetLeft + ($.activeDoor.offsetWidth / 2), $.ego.z, function() {
                 $.activeDoor.children[0].style.transform = "";
                 $.roomData[8] = false;
               });
@@ -250,7 +254,41 @@ $.Logic = {
         if (cmd == verb) {
           newCommand = 'Use ' + thing + ' with ';
         } else {
-          $.ego.say("Nothing happened.", 220);
+          let thing2 = cmd.substring(4, cmd.indexOf(' with '));
+          
+          if (thing2.indexOf(' key' > -1)) {
+            if ($.Game.hasItem(thing2)) {
+              // Using a key.
+              switch (thing) {
+                case 'door':
+                  $.ego.moveTo($.activeDoor.offsetLeft + ($.activeDoor.offsetWidth / 2), $.ego.z, function() {
+                    if ($.roomData[9] || $.inside) {
+                      $.ego.say("I don't want to lock it again.", 220);
+                    } else {
+                      let keyRooms = {'green key': 41};
+                      if (keyRooms[thing2] == $.Game.room) {
+                        // The key is for this door.
+                        $.roomData[9] = true;
+                        $.ego.say("The door is now unlocked.", 220);
+                      } else {
+                        $.ego.say("It's the wrong key for this door.", 220);
+                      }
+                    }
+                  });
+                  break;
+
+                default:
+                  $.ego.say("Nothing happened.", 220);
+                  break;
+              }
+            } else {
+              $.ego.say("I don't have the " + thing2, 220);
+            }
+
+          } else {
+            $.ego.say("Nothing happened.", 220);
+          }
+
           newCommand = verb;
         }
         break;
@@ -351,28 +389,6 @@ $.Logic = {
             
             case 'drain':
               $.ego.say("They won't budge.", 230);
-              break;
-              
-            case 'book':
-              $.ego.moveTo($.ego.cx, 600, function() {
-                $.ego.moveTo($.book.x, 600, function() {
-                  $.Game.getItem('book');
-                  $.book.remove();
-                  $.Game.props[5][0] = 0;  // Clears the room number for the book.
-                  $.Game.addToScore(15);
-                });
-              });
-              break;
-              
-            case 'phone':
-              $.ego.moveTo($.ego.cx, 600, function() {
-                $.ego.moveTo($.phone.x, 600, function() {
-                  $.Game.getItem('phone');
-                  $.phone.remove();
-                  $.Game.props[4][0] = 0;  // Clears the room number for the phone.
-                  $.Game.addToScore(15);
-                });
-              });
               break;
               
             case 'water':

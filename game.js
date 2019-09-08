@@ -173,7 +173,7 @@ $.Game = {
       // Room#, type, name, width, height, x, y, element reference, zindex, colour
       // types: 0 = actor, 1 = item, 2 = prop
 
-      [41 /*62*/, 1, 'green_key', 18, 3, 455, 540, null, 530],
+      [41 /*62*/, 1, 'green_key', 18, 3, 455, 540, null],
 
       [4, 0, 'reaper', 50, 150, 455, 540, null],
       
