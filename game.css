@@ -385,3 +385,27 @@ span {
   transform: rotateY(0deg);
   display: block;
 }
+.green {
+  background-color: #146b07
+}
+.key::before {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  top: -2px;
+  left: -4px;
+  border-radius: 4px;
+  background-color: #146b07;
+}
+.key::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  width: 6px;
+  height: 5px;
+  top: 0px;
+  left: 17px;
+  background-color: #146b07
+}

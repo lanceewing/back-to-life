@@ -173,7 +173,7 @@ $.Game = {
       // Room#, type, name, width, height, x, y, element reference, zindex, colour
       // types: 0 = actor, 1 = item, 2 = prop
 
-      [62, 1, 'green_key', 18, 3, 455, 540, null, 530, '#146b07'],
+      [41 /*62*/, 1, 'green_key', 18, 3, 455, 540, null, 530],
 
       [4, 0, 'reaper', 50, 150, 455, 540, null],
       
@@ -664,7 +664,7 @@ $.Game = {
             
           case 1: // Item
             obj = new Obj(prop[3], prop[4], prop[8]);
-            obj.elem.style.backgroundColor = prop[9];
+            // TODO: obj.elem.style.backgroundColor = prop[9];
             break;
             
           case 2: // Prop
@@ -682,6 +682,7 @@ $.Game = {
 
         $[prop[2]] = obj;
         obj.elem.id = prop[2];
+        obj.propData = prop;
         obj.add();
         obj.setPosition(prop[5], 0, prop[6]);
         prop[7] = obj;
