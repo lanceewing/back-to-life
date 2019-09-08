@@ -6,7 +6,7 @@ class Ego extends Actor {
      * should be only one instance of this class.
      */
     constructor() {
-        super(50, 150, 'black', 0.95, 5, 'black', null, 'black');
+        super(50, 150, 'black', 0.95, 5, 'black', null, 'rgb(20, 30, 20)');
         this.elem.classList.add('ego');
         this.elem.id = 'me';
         this.nesw = 2;

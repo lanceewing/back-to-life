@@ -168,6 +168,14 @@ $.Game = {
     //    + '# ## #### '
     //    ,
 
+    /**
+     * Boolean flags that remember when certain things have happened in the game.
+     */
+    flags: {},
+
+    /**
+     * Props (things) that are in each room.
+     */
     props: [
       
       // Room#, type, name, width, height, x, y, element reference, zindex, colour

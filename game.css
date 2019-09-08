@@ -7,7 +7,7 @@
 }
 body {
   background: #0c161d;
-  color: #AD9E7B;
+  color: #88776a;
   font-family: courier new;
   font-size: 24px;
   overflow:hidden;
@@ -45,6 +45,11 @@ span {
   perspective: 350px;
   overflow: hidden;
 }
+.door.red {
+  background-color: #400b0bfa;
+  box-shadow: inset #250307 0px 0px 3px 4px;
+  background-image: linear-gradient(90deg, transparent 97%, #562121fa 97%);
+}
 .inside .door {
   background-image: linear-gradient(#AD9E7B22 80%, #11111133 20%);
   background-color: #ffffff44
@@ -80,6 +85,9 @@ span {
   width: 960px;
   height: 138px;
 }
+#controls span:hover {
+  color: #ffe9be;
+}
 #controls div {
   float: left;
 }
@@ -92,16 +100,13 @@ span {
   width: 40px;
   line-height: 78px;
   text-align: center;
-  background-color: #524531;
+  background-color: #2d2022;
   margin: 1px;
-}
-#arrows span:hover {
-  color: yellow;
 }
 #items {
   width: 308px;
   height: 136px;
-  background-color: #524531;
+  background-color: #2d2022;;
   margin: 1px;
   overflow: hidden;
   position: relative;
@@ -114,25 +119,18 @@ span {
 #itemlist span {
   width: 300px;
 }
-#itemlist span:hover {
-  color: yellow;
-}
 #commands {
   width: 608px;
-  color: #AD9E7B;
   font-size: 26px;
   font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
 }
 #commands span {
-  background-color: #524531;
+  background-color: #2d2022;
   width: 150px;
   margin: 1px;
   height: 44px;
   text-align: center;
   line-height: 44px;
-}
-#commands span:hover {
-  color: yellow;
 }
 #wrap {
   background-color: #000;

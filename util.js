@@ -47,7 +47,7 @@ $.Util.renderPerson = function(w, h, direction, c, face, clothes, hat, pack, lin
   var ctx = $.Util.create2dContext(w, h + (w / 10));
 
   var ballSize = (w / 5);
-  ctx.lineWidth = 4;
+  ctx.lineWidth = 3;
   ctx.lineJoin = 'round';
   if (line) {
     ctx.strokeStyle = line;
