@@ -269,6 +269,12 @@ span {
   width: 960px;
   z-index: 0;
 }
+#mist {
+  box-shadow: rgb(107, 160, 119) 0px 58px 33px -27px inset;
+  height: 70px;
+  width: 960px;
+  z-index: 100;
+}
 #buildings {
   height: 50px;
   width: 960px;
@@ -278,7 +284,7 @@ span {
 
 #sign {
   left: 120px;
-  top: 16px;
+  top: 59px;
   z-index: 6;
   color: #bbb;
   background-color: #265f28;
@@ -408,4 +414,12 @@ span {
   top: 0px;
   left: 17px;
   background-color: #146b07
+}
+#light_beam {
+  content: "";
+  position: absolute;
+  transition: all 0.4s;
+  transform: translateX(-50%) perspective(400px) rotateX(45deg);
+  transform-origin: top center;
+  background: linear-gradient(0deg, transparent, rgba(255, 255, 255, 0.2));
 }

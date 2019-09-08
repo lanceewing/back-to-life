@@ -173,7 +173,9 @@ $.Game = {
       // Room#, type, name, width, height, x, y, element reference, zindex, colour
       // types: 0 = actor, 1 = item, 2 = prop
 
-      [41 /*62*/, 1, 'green_key', 18, 3, 455, 540, null],
+      [62, 1, 'green_key', 18, 3, 455, 540, null],
+
+      [41, 2, 'light_beam', 100, 264, 613, 520, null, 900],
 
       [4, 0, 'reaper', 50, 150, 455, 540, null],
       
@@ -260,18 +262,14 @@ $.Game = {
       $.controls = document.getElementById('controls');
       $.sign = document.getElementById('sign');
       $.crossing = document.getElementById('crossing');
-      //$.curb = document.getElementById('curb');
       
       this.fillScreen();
-
-      //this.buildRooms();
       
       window.addEventListener("resize", function() { $.Game.fillScreen(); }); 
 
       // Render the wall texture.
       this.wall = this.renderWall();
       $.screen.style.backgroundImage = 'url(' + this.wall.toDataURL("image/png") + ')';
-      
       
       // Register click event listeners for item list arrow buttons.
       document.getElementById("up").addEventListener("click", function(){
