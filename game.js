@@ -84,7 +84,7 @@ $.Game = {
       [0x31, 39,   ,   ,   ,   , 37, 72 ],  // 38
       [0x31, 40,   ,   ,   ,   , 38, 71 ],  // 39
       [0x31,   , 41,   ,   ,   , 39, 70 ],  // 40
-      [0x39,   , 42, 93,   , 40,   ,  1 ],  // 41
+      [0x39,   , 42, 93,   , 40,   ,  1,   ,   , 'green' ],  // 41
       [0x34, 43,   ,   ,   , 41,   , 87 ],  // 42
       [0x34, 44,   ,   ,   ,   , 42,    ],  // 43
       [0x34, 45,   ,   ,   ,   , 43, 77 ],  // 44
@@ -231,7 +231,7 @@ $.Game = {
     
     itemTop: -1,
     
-    gameOver: false,
+    gameOver: true,
     
     score: 0,
 
@@ -246,10 +246,6 @@ $.Game = {
       $.wrap.style.transform = "scale3d(" + $.scaleX + ", " + $.scaleY + ", 1)";
       $.wrap.style.marginLeft = ((window.innerWidth - 960) / 2) + "px";
       $.screen.style.width = (window.innerWidth > 960? window.innerWidth : 960) + "px";
-      // TODO: Can only be invoked by a user gesture, similar to playing sound.
-      //if (document.fullscreenEnabled) {
-      //  document.documentElement.requestFullscreen();
-      //}
     },
 
     /**
@@ -270,7 +266,8 @@ $.Game = {
       $.controls = document.getElementById('controls');
       $.sign = document.getElementById('sign');
       $.crossing = document.getElementById('crossing');
-      
+      $.msg = document.getElementById('msg');
+
       this.fillScreen();
       
       window.addEventListener("resize", function() { $.Game.fillScreen(); }); 
@@ -294,20 +291,46 @@ $.Game = {
         });
       }
       
-      $.screen.onclick = function(e) {
-        $.Game.processCommand(e);
-      };
-      
-      // Initialise and then start the game loop.
-      $.Game.init();
-      $.Game.loop();
+      // Start in game over mode.
+      this.gameOver();
     },
     
+    /**
+     * 
+     */
+    gameOver: function() {
+      this.fadeOut($.screen);
+      this.fadeIn($.msg);
+
+      window.onclick = function(e) {
+        $.Game.fadeOut($.msg);
+        setTimeout(function() {
+          $.msg.style.display = 'none';
+        }, 200);
+        setTimeout(function(e) {
+          $.Game.init();
+          $.Game.loop();
+        }, 500);
+      };
+    },
+
     /**
      * Initialised the parts of the game that need initialising on both
      * the initial start and then subsequent restarts. 
      */
     init: function() {
+      this.gameOver = false;
+
+      window.onclick = null;
+
+      if (document.fullscreenEnabled) {
+       document.documentElement.requestFullscreen();
+      }
+
+      $.screen.onclick = function(e) {
+        $.Game.processCommand(e);
+      };
+
       this.setTime(2030);
 
       // For restarts, we'll need to remove the objects from the screen.
@@ -573,6 +596,9 @@ $.Game = {
       // Only one of the doors is active.
       $.activeDoor = ($.doors[0].style.display == 'block'? $.doors[0] : $.doors[1]);
 
+      // Set colour of the door.
+      $.activeDoor.children[0].className = $.roomData[10];
+
       if ($.inside)  {
         // Inside doors always start out open.
         $.activeDoor.children[0].style.transform = "rotateY(180deg)";
@@ -809,7 +835,7 @@ $.Game = {
      */
     fadeIn: function(elem) {
       // Remove any previous transition.
-      elem.style.transition = 'opacity 0.2s';
+      elem.style.transition = 'opacity 0.5s';
       elem.style.opacity = 1.0;
     },
     

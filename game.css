@@ -12,6 +12,7 @@ body {
   font-size: 24px;
   overflow:hidden;
   scrollbar-width: none;
+  cursor: crosshair;
 }
 body::-webkit-scrollbar {
   display: none;
@@ -44,8 +45,19 @@ span {
   box-shadow: #1f1f1f 0px 0px 3px 4px;
   perspective: 350px;
   overflow: hidden;
+  display: none;
 }
-.door.red {
+.door .green {
+  background-color: #051f01fa;
+  box-shadow: inset #001306 0px 0px 3px 4px;
+  background-image: linear-gradient(90deg, transparent 97%, #193115fa 97%);
+}
+.door .red {
+  background-color: #400b0bfa;
+  box-shadow: inset #250307 0px 0px 3px 4px;
+  background-image: linear-gradient(90deg, transparent 97%, #562121fa 97%);
+}
+.door .black {
   background-color: #400b0bfa;
   box-shadow: inset #250307 0px 0px 3px 4px;
   background-image: linear-gradient(90deg, transparent 97%, #562121fa 97%);
@@ -60,12 +72,9 @@ span {
   transform-origin: right center;
   width: 100%;
   height: 100%;
-  background-color: #051f01fa;
   z-index: 16;
   border-top-left-radius: 90px;
   border-top-right-radius: 90px;
-  box-shadow: inset #001306 0px 0px 3px 4px;
-  background-image: linear-gradient(90deg, transparent 97%, #193115fa 97%);
   background-size: 21px 50px;
 }
 #status {
@@ -143,7 +152,6 @@ span {
   left: 0;
   bottom: 0;
   right: 0;
-  cursor: crosshair;
   opacity: 0;
   overflow: hidden;
 }
@@ -420,4 +428,21 @@ span {
   transform: translateX(-50%) perspective(400px) rotateX(45deg);
   transform-origin: top center;
   background: linear-gradient(0deg, transparent, rgba(255, 255, 255, 0.2));
+}
+#msg {
+  z-index: 1500;
+  height: 33px;
+  font-size: 50px;
+  margin-top: -25px;
+  text-align: center;
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  animation: blinker 1.5s linear infinite;
+  color: white;
+}
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
 }
