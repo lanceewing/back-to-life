@@ -150,7 +150,7 @@ $.Game = {
       [0x02,   , 83,   ,   , 91,   , 67 ],  // 92
 
       // Inside rooms.
-      [0x80,   ,   ,   , 41,   ,   ,    ],  // 93
+      [0x80,   ,   ,   , 41,   ,   ,    ,   ,   , 'green' ],  // 93
     ],
 
     /**
@@ -185,7 +185,7 @@ $.Game = {
 
       [41, 2, 'light_beam', 100, 264, 613, 520, null, 900],
 
-      [4, 0, 'reaper', 50, 150, 455, 540, null],
+      [41, 0, 'reaper', 50, 150, 710, 650, null],
       
       [8, 0, 'man', 50, 150, 455, 540, null],
       
@@ -678,11 +678,8 @@ $.Game = {
             switch (prop[2]) {
               case 'reaper':
                 obj = new Actor(prop[3], prop[4], 'black', 0.95, 10, 'black');
-                obj.setDirection(Sprite.OUT);
-                break;
-              case 'man':
-                obj = new Actor(prop[3], prop[4], '#614126', 0.95, 5, '#ccffcc', '#926239');
-                obj.setDirection(Sprite.OUT);
+                obj.setDirection(Sprite.LEFT);
+                obj.ignore = true;
                 break;
               case 'doll':
                 obj = new Actor(prop[3], prop[4], '#111', 0.95, 5, '#111');
@@ -741,7 +738,8 @@ $.Game = {
       };
       elem.onclick = function(e) {
         // TODO: Fallback to parent is experimental.
-        $.Game.thing = (e.target.id? e.target.id.replace('_',' ') : (e.target.className? e.target.className : e.target.parentElement.className));
+        let fallback = (!e.target.className || e.target.parentElement.className == 'door');
+        $.Game.thing = (e.target.id? e.target.id.replace('_',' ') : (fallback? e.target.parentElement.className: e.target.className));
         $.Game.processCommand(e);
       };
     },

@@ -446,3 +446,11 @@ span {
     opacity: 0;
   }
 }
+#reaper {
+  transform: rotate(90deg);
+}
+#reaper::after {
+  left: 28px;
+  width: 22px;
+  height: 148px;
+}

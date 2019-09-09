@@ -132,8 +132,12 @@ $.Logic = {
             // Walk to be in front of the door/path.
             $.ego.moveTo($.activeDoor.offsetLeft + ($.activeDoor.offsetWidth / 2), $.ego.z, function() {
               if ($.roomData[9] || $.inside) {  // Unlocked
-                $.activeDoor.children[0].style.transform = ($.inside? "rotateY(180deg)" : "rotateY(-45deg)");
-                $.roomData[8] = true;
+                if ($.roomData[8]) {
+                  $.ego.say("The door is alrleady open.", 230);
+                } else {
+                  $.activeDoor.children[0].style.transform = ($.inside? "rotateY(180deg)" : "rotateY(-45deg)");
+                  $.roomData[8] = true;
+                }
               } else {
                 $.ego.say("The door is locked.", 230);
               }
