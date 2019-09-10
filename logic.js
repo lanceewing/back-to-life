@@ -277,15 +277,19 @@ $.Logic = {
           switch (thing) {
             default:
               // Is item in the current room?
-              if ($[thingId]) {
-                $.ego.moveTo($.ego.cx, 600, function() {
-                  $.ego.moveTo($[thingId].x, 600, function() {
-                    $.Game.getItem(thing);
-                    $[thingId].remove();
-                    $[thingId].propData[0] = 0;  // Clears the room number for the item.
-                    $.Game.addToScore(15);
+              if ($[thingId] && $[thingId].item) {
+                if ($.Game.hasItem('backpack')) {
+                  $.ego.moveTo($.ego.cx, 600, function() {
+                    $.ego.moveTo($[thingId].x, 600, function() {
+                      $.Game.getItem(thing);
+                      $[thingId].remove();
+                      $[thingId].propData[0] = 0;  // Clears the room number for the item.
+                      $.Game.addToScore(15);
+                    });
                   });
-                });
+                } else {
+                  $.ego.say("My hands are full. I need a bag of some kind.", 220);
+                }
               }
               else {
                 $.ego.say("I can't get that.", 220);

@@ -156,7 +156,9 @@ $.Game = {
     /*
       8  - Door open
       9  - Door unlocked
-      10 - Pulled reaper
+      10 - Door colour
+      11 - Pulled reaper
+      12 - 
 
     */
 
@@ -695,7 +697,7 @@ $.Game = {
             
           case 1: // Item
             obj = new Obj(prop[3], prop[4], prop[8]);
-            // TODO: obj.elem.style.backgroundColor = prop[9];
+            obj.item = true;
             break;
             
           case 2: // Prop
@@ -790,7 +792,7 @@ $.Game = {
     scrollInv: function(dir) {
       var newTop = this.itemTop + (27 * dir);
       var invCount = $.items.children.length;
-      if ((newTop <= -1) && (newTop > -((this.invCount - 4) * 27))) {
+      if ((newTop <= -1) && (newTop > -((invCount - 4) * 27))) {
         this.itemTop = newTop;
         $.items.style.top = this.itemTop + 'px';
       }
