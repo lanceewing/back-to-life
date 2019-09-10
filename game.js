@@ -199,6 +199,8 @@ $.Game = {
       [41, 1, 'time_machine', 20, 15, 680, 510, null],
 
       [41, 1, 'black_key', 18, 3, 750, 510, null],
+
+      [93, 1, 'backpack', 30, 40, 380, 530, null],
       
       [8, 0, 'doll', 20, 60, 523, 540, null],
       
@@ -347,7 +349,7 @@ $.Game = {
       
       // Set the room back to the start, and clear the object map.
       this.objs = [];
-      this.room = 41;
+      this.room = 93;//41;
       
       // Create Ego (the main character) and add it to the screen.
       $.ego = new Ego();

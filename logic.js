@@ -80,14 +80,27 @@ $.Logic = {
           case 'right path':
             $.ego.say("The path makes a 90 degree turn around the corner.", 250);
             break;
+
+          case 'backpack':
+            $.ego.say("Exactly what I need for carrying more things.", 300);
+            break;
+
+          case 'touch of death':
+            $.ego.say("The label reads 'Aim, Fire, Die'", 250);
+            break;
+
+          case 'black key':
+            $.ego.say("It looks vaguely familiar.", 250);
+            break;
             
           case 'me':
-            $.ego.say("I'm the Grim Reaper.", 200);
+            $.ego.say("I think I'm the Grim Reaper.", 200);
             break;
             
           case 'reaper':
-            // TODO: Searching pockets will find something.
-            $.ego.say("It's me from the future.", 270);
+            $.ego.say("He looks like me but older.", 270, function() {
+              $.ego.say("I think he's dead.", 270);
+            });
             break;
             
           case 'doll':
@@ -103,7 +116,9 @@ $.Logic = {
             break;
             
           default:
-            $.ego.say("It's just a " + thing + ".", 190);
+            if (thing != "") {
+              $.ego.say("It's just a " + thing + ".", 190);
+            }
             break;
         
         }
@@ -222,6 +237,12 @@ $.Logic = {
             }
 
           } else {
+            if (thing2 == 'touch of death') {
+              if (thing == 'reaper') {
+                // TODO:
+              }
+            }
+
             $.ego.say("Nothing happened.", 220);
           }
 
@@ -278,13 +299,19 @@ $.Logic = {
             default:
               // Is item in the current room?
               if ($[thingId] && $[thingId].item) {
-                if ($.Game.hasItem('backpack')) {
+                if ($.Game.hasItem('backpack') || (thing == 'backpack')) {
                   $.ego.moveTo($.ego.cx, 600, function() {
                     $.ego.moveTo($[thingId].x, 600, function() {
                       $.Game.getItem(thing);
                       $[thingId].remove();
                       $[thingId].propData[0] = 0;  // Clears the room number for the item.
                       $.Game.addToScore(15);
+
+                      if (thing == 'backpack') {
+                        $.ego.pack = 'rgb(20, 30, 20)';
+                        $.ego.canvas = $.ego.buildCanvas();
+                        $.ego.say("Nice fit!", 150);
+                      }
                     });
                   });
                 } else {

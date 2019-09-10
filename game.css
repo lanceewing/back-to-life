@@ -461,3 +461,8 @@ span {
   width: 22px;
   height: 148px;
 }
+#backpack {
+  border: 2px solid black;
+  background-color: rgb(20, 30, 20);
+  background-image: linear-gradient(0deg, transparent 60%, #2a332afa 60%);
+}

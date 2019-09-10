@@ -7,8 +7,6 @@ class Actor extends Sprite {
         this.pack = pack;
         this.outline = outline;
         this.canvas = this.buildCanvas();
-        let style = this.elem.style;
-        style.backgroundImage = 'url(' + this.canvas.toDataURL("image/png") + ')';
         this.elem.classList.add('actor');
     }
 
@@ -29,6 +27,8 @@ class Actor extends Sprite {
             }
         }
         
+        this.elem.style.backgroundImage = 'url(' + ctx.canvas.toDataURL("image/png") + ')';
+
         return ctx.canvas;
     }
   
