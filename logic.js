@@ -8,6 +8,22 @@ $.Logic = {
     let thingId = thing.replace(' ','_');
 
     switch (verb) {
+      case 'Pull':
+        switch (thing) {
+          case 'reaper':
+            if (!$.roomData[11] || $.roomData[11] < 2) {
+              $.ego.moveTo($.reaper.x - 50, 550, function() {
+                $.reaper.ignore = false;
+                $.reaper.moveTo($.reaper.x - 70, $.reaper.z, function() { $.reaper.ignore = true; });
+                $.ego.moveTo($.reaper.x - 120, 550);
+                $.roomData[11] = ($.roomData[11]? 2 : 1);
+              });
+            } else {
+              $.ego.say("I think I'll let him be now.", 220);
+            }
+            break;
+        }
+        break;
     
       case 'Walk to':
         switch (thing) {

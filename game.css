@@ -397,8 +397,11 @@ span {
   transform: rotateY(0deg);
   display: block;
 }
-.green {
+.green, .green.key::before, .green.key::after  {
   background-color: #146b07
+}
+.black, .black.key::before, .black.key::after {
+  background-color: black;
 }
 .key::before {
   content: '';
@@ -409,7 +412,6 @@ span {
   top: -2px;
   left: -4px;
   border-radius: 4px;
-  background-color: #146b07;
 }
 .key::after {
   content: '';
@@ -419,7 +421,6 @@ span {
   height: 5px;
   top: 0px;
   left: 17px;
-  background-color: #146b07
 }
 #light_beam {
   content: "";
@@ -445,6 +446,10 @@ span {
   50% {
     opacity: 0;
   }
+}
+#time_machine {
+  background-color: silver;
+	border: 2px solid black;
 }
 #reaper {
   transform: rotate(90deg);

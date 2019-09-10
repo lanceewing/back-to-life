@@ -153,6 +153,13 @@ $.Game = {
       [0x80,   ,   ,   , 41,   ,   ,    ,   ,   , 'green' ],  // 93
     ],
 
+    /*
+      8  - Door open
+      9  - Door unlocked
+      10 - Pulled reaper
+
+    */
+
     /**
      * Street map of the city.
      */
@@ -183,19 +190,15 @@ $.Game = {
 
       [62, 1, 'green_key', 18, 3, 455, 540, null],
 
-      [41, 2, 'light_beam', 100, 264, 613, 520, null, 900],
+      [23, 2, 'light_beam', 100, 264, 613, 520, null, 900],
 
       [41, 0, 'reaper', 50, 150, 710, 650, null],
-      
-      [8, 0, 'man', 50, 150, 455, 540, null],
-      
-      [8, 2, 'blanket', 160, 15, 400, 550, null, 530],
+
+      [41, 1, 'time_machine', 20, 15, 680, 510, null],
+
+      [41, 1, 'black_key', 18, 3, 750, 510, null],
       
       [8, 0, 'doll', 20, 60, 523, 540, null],
-      
-      [0, 2, 'phone', 15, 6, 800, 600, null, 530],
-      
-      [6, 2, 'book', 25, 10, 475, 560, null, 530] 
       
       //[2, 2, 'cupboard', 100, 200, 200, 530, null],
       
@@ -353,7 +356,6 @@ $.Game = {
       this.addActors(200);
 
       // Starting inventory.
-      this.getItem('time machine');
       this.getItem('touch of death');
       
       // Enter the starting room.
