@@ -157,7 +157,7 @@ class Sprite extends Obj {
                 x += Math.cos(this.heading) * Math.round(this.step * $.Game.stepFactor);
                 z += Math.sin(this.heading) * Math.round(this.step * $.Game.stepFactor);
                 
-                if ($.Game.userInput) {
+                if ($.Game.userInput || (this != $.ego)) {
                     // Check whether a room edge has been hit.
                     if (x < 0) edge = 1;
                     if ((x + this.width) > 960) edge = 6;

@@ -24,6 +24,14 @@ $.Logic = {
             break;
         }
         break;
+
+      case 'Push':
+        switch (thing) {
+          case 'reaper':
+            $.ego.say("Maybe I should try pulling.", 220);
+            break;
+        }
+        break;
     
       case 'Walk to':
         switch (thing) {
@@ -81,12 +89,40 @@ $.Logic = {
             $.ego.say("The path makes a 90 degree turn around the corner.", 250);
             break;
 
+          case 'time machine':
+            if ($.Game.hasItem('time machine')) {
+              $.ego.say("It has a solar panel on it.", 250);
+            } else {
+              $.ego.say("Why did the older Reaper have a time machine?", 250);
+            }
+            break;
+
+          case 'door':
+            if ($.roomData[8]) {
+              $.ego.say("The door is open.", 250);
+            } else {
+              $.ego.say("The door is closed.", 250);
+            }
+            break;
+
+          case 'ghost':
+            $.ego.say("Why do I feel like I'm the reason they're ghosts?", 250, function() {
+              $.ego.say("Why is everyone dead?", 200);
+            });
+            break;
+
+          case 'mist':
+            $.ego.say("The mist is glowing green. It looks poluted.", 250);
+            break;
+
           case 'backpack':
             $.ego.say("Exactly what I need for carrying more things.", 300);
             break;
 
           case 'touch of death':
-            $.ego.say("The label reads 'Aim, Fire, Die'", 250);
+            $.ego.say("The label reads 'Aim, fire, instant death!'", 250, function() {
+              $.ego.say("How morbid.", 140);
+            });
             break;
 
           case 'black key':
@@ -94,12 +130,14 @@ $.Logic = {
             break;
             
           case 'me':
-            $.ego.say("I think I'm the Grim Reaper.", 200);
+            $.ego.say("I look like the Grim Reaper. Is that who I am?", 200);
             break;
             
           case 'reaper':
             $.ego.say("He looks like me but older.", 270, function() {
-              $.ego.say("I think he's dead.", 270);
+              if ($.roomData[12]) {
+                $.ego.say("I think he's dead now.", 270);
+              }
             });
             break;
             
@@ -140,7 +178,27 @@ $.Logic = {
       case 'Talk to':
         switch (thing) {
           case 'reaper':
-            $.ego.say("He's dead... unfortunately.", 200);
+            if ($.roomData[12]) {
+              $.ego.say("He's dead... unfortunately.", 200);
+            }
+            else {
+              let ghost = new Ghost(50);
+              ghost.elem.style.opacity = 0.0;
+              ghost.add();
+              ghost.setPosition(680, 0, 530);
+              ghost.elem.style.transition = 'opacity 0.5s';
+              ghost.elem.style.opacity = 0.3;
+
+              ghost.say("Uh! Please, help!", 200, function() {
+                $.ego.say("Who are you?", 170, function() {
+                  ghost.say("I am you, from the future.", 200, function() {
+                    ghost.say("Back in 2025, we got a cold. We call it The Death.", 300); 
+                  })
+                })
+              });
+
+              //$.reaper.say("Please, you must bring them back to life.", 150);
+            }
             break;
             
           case 'me':
@@ -207,7 +265,7 @@ $.Logic = {
         } else {
           let thing2 = cmd.substring(4, cmd.indexOf(' with '));
           
-          if (thing2.indexOf(' key' > -1)) {
+          if (thing2.indexOf(' key') > -1) {
             if ($.Game.hasItem(thing2)) {
               // Using a key.
               switch (thing) {
@@ -238,12 +296,24 @@ $.Logic = {
 
           } else {
             if (thing2 == 'touch of death') {
-              if (thing == 'reaper') {
-                // TODO:
+              switch (thing) {
+                case 'me':
+                  $.ego.say("It doesn't work on me.", 200);
+                  break;
+
+                case 'reaper':
+                  $.ego.say("Strange... It doesn't work on him.", 200);
+                  break;
+
+                case 'ghost':
+                  $.ego.say("They're already dead.", 200);
+                  break;
+                
+                default:
+                  $.ego.say("Nothing happened.", 220);
+                  break;
               }
             }
-
-            $.ego.say("Nothing happened.", 220);
           }
 
           newCommand = verb;
@@ -299,7 +369,8 @@ $.Logic = {
             default:
               // Is item in the current room?
               if ($[thingId] && $[thingId].item) {
-                if ($.Game.hasItem('backpack') || (thing == 'backpack')) {
+                // Ego can only hold max of two items, unless he has the backpack.
+                if ($.Game.hasItem('backpack') || (thing == 'backpack') || ($.items.children.length < 2)) {
                   $.ego.moveTo($.ego.cx, 600, function() {
                     $.ego.moveTo($[thingId].x, 600, function() {
                       $.Game.getItem(thing);

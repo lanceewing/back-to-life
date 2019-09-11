@@ -158,24 +158,9 @@ $.Game = {
       9  - Door unlocked
       10 - Door colour
       11 - Pulled reaper
-      12 - 
+      12 - Reaper dead
 
     */
-
-    /**
-     * Street map of the city.
-     */
-    //map:  '          '
-    //    + '# #### ## '
-    //    + '# ####    '
-    //    + '# #### ## '
-    //    + '          '
-    //    + '# ## # ## '
-    //    + '#         '
-    //    + '# ## #### '
-    //    + '# ##      '
-    //    + '# ## #### '
-    //    ,
 
     /**
      * Boolean flags that remember when certain things have happened in the game.
@@ -202,28 +187,8 @@ $.Game = {
 
       [93, 1, 'backpack', 30, 40, 380, 530, null],
       
-      [8, 0, 'doll', 20, 60, 523, 540, null],
-      
-      //[2, 2, 'cupboard', 100, 200, 200, 530, null],
-      
-      /* Things I hoped to add to the game.
-      'fishing pole',
-      'eel flashlight',
-      'poisoned rat',
-      'poisoned cheese',
-      'wine bottle',
-      'empty bottle',
-      'old batteries',
-      'vinyl tape',
-      'pipe',
-      'lighter',
-      'suit of armour',
-      'worm',
-      'nylon string',
-      'hammer',
-      'nails',
-      'mop'
-      */
+      //[8, 0, 'doll', 20, 60, 523, 540, null],
+
     ],
     
     actors: [],
@@ -349,7 +314,7 @@ $.Game = {
       
       // Set the room back to the start, and clear the object map.
       this.objs = [];
-      this.room = 93;//41;
+      this.room = 41;
       
       // Create Ego (the main character) and add it to the screen.
       $.ego = new Ego();
@@ -365,20 +330,14 @@ $.Game = {
       // Enter the starting room.
       this.newRoom();
       
-      // // Intro text.
+      // Intro text.
       // this.userInput = false;
-      // $.ego.say('Hello!!', 100, function() {
-      //   $.ego.say('My name is Pip.', 200, function() {
-      //     $.ego.say('I accidentally dropped my phone down a curbside drain...   Duh!!', 300, function() {
-      //       $.ego.moveTo(600, 600, function() {
-      //         $.ego.say('I climbed down here through that open drain to search for it.', 300, function() {
-      //           $.ego.moveTo(600, 640, function() {
-      //             $.ego.say('Unfortunately this is blocks away from where it fell in.', 300, function() {
-      //               $.ego.say('Please help me to find it down here.', 200, function() {
-      //                 $.Game.userInput = true;
-      //               });
-      //             });
-      //           });
+      // $.ego.say('Where am I?', 140, function() {
+      //   $.ego.moveTo(500, 600, function() {
+      //     $.ego.say('Who am I?', 140, function() {
+      //       $.ego.moveTo(500, 640, function() {
+      //         $.ego.say('And why is there a body over there that looks like me?', 300, function() {
+      //           $.Game.userInput = true;
       //         });
       //       });
       //     });

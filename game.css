@@ -454,7 +454,7 @@ span {
   box-shadow: inset #001306 0px -1px 4px 2px, #7a7f5e 0px -3px 7px -1px;
 }
 #reaper {
-  transform: rotate(90deg);
+  transform: rotate(90deg) rotateY(0deg);
 }
 #reaper::after {
   left: 28px;
