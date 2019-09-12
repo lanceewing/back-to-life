@@ -203,7 +203,7 @@ $.Game = {
     
     itemTop: -1,
     
-    gameOver: true,
+    _gameOver: true,
     
     score: 0,
 
@@ -291,7 +291,7 @@ $.Game = {
      * the initial start and then subsequent restarts. 
      */
     init: function() {
-      this.gameOver = false;
+      this._gameOver = false;
 
       window.onclick = null;
 
@@ -375,9 +375,12 @@ $.Game = {
       // Game has focus and is not paused, so execute normal game loop, which is
       // to update all objects on the screen.
       this.updateObjects();
+
+      // Small hack to account for the rotation of the reaper body.
+      $.reaper.elem.style.zIndex = 520;
       
       // Update sentence.
-      if (!this.gameOver) {
+      if (!this._gameOver) {
         $.sentence.innerHTML = this.command + ' ' + this.thing;
       } else {
         $.sentence.innerHTML = 'Game Over';
@@ -474,7 +477,7 @@ $.Game = {
      * Processes the current user interaction.
      */
     processCommand: function(e) {
-      if (this.userInput && !this.gameOver) {
+      if (this.userInput && !this._gameOver) {
         this.command = $.Logic.process(this.verb, this.command, this.thing, e);
         if (e) e.stopPropagation();
         if (this.command == this.verb) {

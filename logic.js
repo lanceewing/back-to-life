@@ -138,6 +138,9 @@ $.Logic = {
               if ($.roomData[12]) {
                 $.ego.say("I think he's dead now.", 270);
               }
+              else {
+                $.Game.userInput = true;
+              }
             });
             break;
             
@@ -179,25 +182,51 @@ $.Logic = {
         switch (thing) {
           case 'reaper':
             if ($.roomData[12]) {
-              $.ego.say("He's dead... unfortunately.", 200);
+              $.ego.say("My spirit... I mean his spirit, has departed now... unfortunately.", 300);
             }
             else {
               let ghost = new Ghost(50);
               ghost.elem.style.opacity = 0.0;
               ghost.add();
-              ghost.setPosition(680, 0, 530);
+              ghost.setPosition($.reaper.x, 0, 530);
               ghost.elem.style.transition = 'opacity 0.5s';
               ghost.elem.style.opacity = 0.3;
 
-              ghost.say("Uh! Please, help!", 200, function() {
+              ghost.say("Please, help me!", 200, function() {
                 $.ego.say("Who are you?", 170, function() {
                   ghost.say("I am you, from the future.", 200, function() {
-                    ghost.say("Back in 2025, we got a cold. We call it The Death.", 300); 
-                  })
-                })
+                    ghost.say("Five years ago, we got sick. Our kind call it The Death.", 300, function() {
+                      ghost.say("Our father always told us to stay indoors when we got The Death.", 300, function() {
+                        ghost.say("We should have listened to him!", 300, function() {
+                          ghost.say("Instead we went outside, and all the humans caught The Death!", 300, function() {
+                            ghost.say("For us, The Death is harmless, like a cold. For them it meant death.", 350, function() {
+                              $.ego.say("So, you are me?", 170, function() {
+                                ghost.say("Yes! And in the far future, we build a time machine to go back...", 300, function() {
+                                  ghost.say("...and stop ourself from leaving our apartment.", 300, function() {
+                                    ghost.say("But I failed. I didn't come back far enough, and now I'm dead.", 300, function() {
+                                      $.ego.say("How did you die?", 170, function() {
+                                        ghost.say("It doesn't matter. Its up to you now, to go back to 2025 and stop us.", 350, function() {
+                                          ghost.say("If you stop us leaving our room, everyone else will come Back to Life.", 300, function() {
+                                            ghost.say("I'm fading now. I'll be gone...  forever...  Good luck.", 300, function() {
+                                              ghost.elem.style.opacity = 0.0;
+                                              $.Game.userInput = true;
+                                              $.roomData[12] = true;
+                                            });
+                                          });
+                                        });
+                                      });
+                                    });
+                                  });
+                                });
+                              });
+                            });
+                          });
+                        });
+                      });
+                    }); 
+                  });
+                });
               });
-
-              //$.reaper.say("Please, you must bring them back to life.", 150);
             }
             break;
             

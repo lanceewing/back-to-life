@@ -108,8 +108,6 @@ class Sprite extends Obj {
         this.elem.style.zIndex = Math.floor(this.z);
     }
   
-
-  
     /**
      * Sets the direction of this Sprite to the new direction provided. The direction is
      * a bit mask, and so might be a composite direction. From the direction, the heading
