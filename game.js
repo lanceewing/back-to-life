@@ -328,6 +328,7 @@ $.Game = {
       this.getItem('touch of death');
       // TODO: Remove.
       //this.getItem('time machine');
+      this.getItem('green key');
       
       // Enter the starting room.
       this.newRoom();
@@ -583,7 +584,12 @@ $.Game = {
         $.roomData[8] = true;
       }
       else {
-
+        $.activeDoor.style.overflow = 'hidden';
+        if ($.roomData[8]) {
+          $.activeDoor.children[0].style.transform = "rotateY(-45deg)";
+        } else {
+          $.activeDoor.children[0].style.transform = "rotateY(0deg)";
+        }
       }
 
       // Crossing (display none, display block)
