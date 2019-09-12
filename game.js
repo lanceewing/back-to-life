@@ -83,7 +83,7 @@ $.Game = {
       [0x31, 38,   ,   ,   ,   , 36,    ],  // 37
       [0x31, 39,   ,   ,   ,   , 37, 72 ],  // 38
       [0x31, 40,   ,   ,   ,   , 38, 71 ],  // 39
-      [0x31,   , 41,   ,   ,   , 39, 70 ],  // 40
+      [0x31,   , 41,   , 95,   , 39, 70,   ,   , 'black' ],  // 40
       [0x39,   , 42, 93,   , 40,   ,  1,   ,   , 'green' ],  // 41
       [0x34, 43,   ,   ,   , 41,   , 87 ],  // 42
       [0x34, 44,   ,   ,   ,   , 42,    ],  // 43
@@ -177,7 +177,7 @@ $.Game = {
 
       [62, 1, 'green_key', 18, 3, 455, 540, null],
 
-      [23, 2, 'light_beam', 100, 264, 613, 520, null, 900],
+      [40, /*23,*/ 2, 'light_beam', 100, 264, 613, 520, null, 900],
 
       [41, 0, 'reaper', 50, 150, 710, 650, null],
 
@@ -186,8 +186,6 @@ $.Game = {
       [41, 1, 'black_key', 18, 3, 750, 510, null],
 
       [93, 1, 'backpack', 30, 40, 380, 530, null],
-      
-      //[8, 0, 'doll', 20, 60, 523, 540, null],
 
     ],
     
@@ -207,7 +205,7 @@ $.Game = {
     
     score: 0,
 
-    time: 2030,
+    year: 2030,
     
     /**
      * Scales the screen div to fit the whole screen.
@@ -303,8 +301,6 @@ $.Game = {
         $.Game.processCommand(e);
       };
 
-      this.setTime(2030);
-
       // For restarts, we'll need to remove the objects from the screen.
       if (this.objs) {
         for (var i=0; i<this.objs.length; i++) {
@@ -321,15 +317,21 @@ $.Game = {
       $.ego.add();
       $.ego.setPosition(500, 0, 600);
       
+      // Start in 2030 AD.
+      this.setTime(2030);
+
       // Add actors into the rooms.
       this.addActors(200);
 
       // Starting inventory.
       this.getItem('touch of death');
+      // TODO: Remove.
+      this.getItem('time machine');
       
       // Enter the starting room.
       this.newRoom();
       
+      // TODO: Uncomment.
       // Intro text.
       // this.userInput = false;
       // $.ego.say('Where am I?', 140, function() {
@@ -388,8 +390,9 @@ $.Game = {
       
       // If after updating all objects, the room that Ego says it is in is different
       // than what it was previously in, then we trigger entry in to the new room.
-      if ($.ego.room != this.room) {
+      if (($.ego.room != this.room) || ($.ego.year != this.year)) {
         this.room = $.ego.room;
+        $.Game.setTime($.ego.year);
         this.fadeOut($.screen);
         setTimeout(function() {
           $.Game.newRoom();
@@ -459,10 +462,11 @@ $.Game = {
     /**
      * Sets the current year in time.
      * 
-     * @param {*} time The current year in time.
+     * @param {*} year The current year in time.
      */
-    setTime: function(time) {
-      $.time.innerHTML = '' + time + ' AD';
+    setTime: function(year) {
+      $.ego.year = this.year = year;
+      $.time.innerHTML = '' + year + ' AD';
     },
 
     /**
@@ -492,9 +496,7 @@ $.Game = {
      */
     addActors: function(numOfActors) {
       // Initialise actors for each outside room.
-      for (let a=0; a<=92; a++) {
-        this.actors[a] = [];
-      }
+      this.initActors();
 
       // Now random assign actors to a room.
       for (let i=0; i<numOfActors; i++) {
@@ -504,6 +506,15 @@ $.Game = {
 
       // No ghosts in starting room.
       this.actors[41] = [];
+    },
+
+    /**
+     * Initialises the actors array.
+     */
+    initActors: function() {
+      for (let a=0; a<=92; a++) {
+        this.actors[a] = [];
+      }
     },
 
     /**
@@ -530,7 +541,7 @@ $.Game = {
       $.roomData = this.rooms[this.room - 1];
       
       $.inside = ($.roomData[0] & 0x80);
-      $.screen.className = ($.inside? 'inside' : 'outside');
+      $.screen.className = ($.inside? 'inside ' : 'outside ') + 'year' + this.year;
 
       // Draw the bricks if the region has them.
       $.wall.className = '';
@@ -539,10 +550,6 @@ $.Game = {
         $.wall.classList.add('bricks');
       } 
 
-      // TODO: This effect doesn't really work too well.
-      //$.wall.classList.add('b' + ((roomData[0] & 0x70) >> 4));
-
-      // TODO: Add left and right paths depending on available directions.
       let pathClass = '';
       if ($.roomData[2]) {
         pathClass += 'left';
@@ -624,6 +631,7 @@ $.Game = {
       
       $.Game.fadeIn($.screen);
       $.ego.show();
+      $.Game.fadeIn($.ego.elem);
     },
     
     nth: function(n) { 
@@ -648,12 +656,6 @@ $.Game = {
                 obj = new Actor(prop[3], prop[4], 'black', 0.95, 10, 'black');
                 obj.setDirection(Sprite.LEFT);
                 obj.ignore = true;
-                break;
-              case 'doll':
-                obj = new Actor(prop[3], prop[4], '#111', 0.95, 5, '#111');
-                obj.setDirection(Sprite.OUT);
-                break;
-              case 'engineer':
                 break;
             }
             obj.setPosition(prop[5], 0, prop[6]);
@@ -705,7 +707,6 @@ $.Game = {
         $.Game.thing = '';
       };
       elem.onclick = function(e) {
-        // TODO: Fallback to parent is experimental.
         let fallback = (!e.target.className || e.target.parentElement.className == 'door');
         $.Game.thing = (e.target.id? e.target.id.replace('_',' ') : (fallback? e.target.parentElement.className: e.target.className));
         $.Game.processCommand(e);

@@ -90,11 +90,7 @@ $.Logic = {
             break;
 
           case 'time machine':
-            if ($.Game.hasItem('time machine')) {
-              $.ego.say("It has a solar panel on it.", 250);
-            } else {
-              $.ego.say("Why did the older Reaper have a time machine?", 250);
-            }
+            $.ego.say("It has a solar panel on it.", 250);
             break;
 
           case 'door':
@@ -106,9 +102,13 @@ $.Logic = {
             break;
 
           case 'ghost':
-            $.ego.say("Why do I feel like I'm the reason they're ghosts?", 250, function() {
-              $.ego.say("Why is everyone dead?", 200);
-            });
+            if ($.roomData[12]) {
+              $.ego.say("The old reaper told me I'm the reason they're dead.", 250);
+            } else {
+              $.ego.say("Why do I feel like I'm the reason they're ghosts?", 250, function() {
+                $.ego.say("Why is everyone dead?", 200);
+              });
+            }
             break;
 
           case 'mist':
@@ -136,16 +136,12 @@ $.Logic = {
           case 'reaper':
             $.ego.say("He looks like me but older.", 270, function() {
               if ($.roomData[12]) {
-                $.ego.say("I think he's dead now.", 270);
+                $.ego.say("I think he's fully dead now.", 270);
               }
               else {
                 $.Game.userInput = true;
               }
             });
-            break;
-            
-          case 'doll':
-            $.ego.say("This thing looks genuinely scary.", 200);
             break;
 
           case 'sign':
@@ -165,13 +161,8 @@ $.Logic = {
         }
         break;
       
-      // TODO: Replace Eat with something else. We don't need it.
       case 'Eat':
         switch (thing) {
-          case 'chocolate coins':
-            $.ego.say("Yummy! Plenty more where that came from.", 200);
-            break;
-            
           default:
             $.ego.say("Uh...  No.", 130);
             break;
@@ -189,6 +180,7 @@ $.Logic = {
               ghost.elem.style.opacity = 0.0;
               ghost.add();
               ghost.setPosition($.reaper.x, 0, 530);
+              ghost.setDirection(Sprite.OUT);
               ghost.elem.style.transition = 'opacity 0.5s';
               ghost.elem.style.opacity = 0.3;
 
@@ -232,6 +224,10 @@ $.Logic = {
             
           case 'me':
             $.ego.say("Isn't that what I'm doing?", 150);
+            break;
+
+          case 'ghost':
+            $.ego.say("Woooooo!!!", 150);
             break;
             
           default:
@@ -336,6 +332,33 @@ $.Logic = {
 
                 case 'ghost':
                   $.ego.say("They're already dead.", 200);
+                  break;
+                
+                default:
+                  $.ego.say("Nothing happened.", 220);
+                  break;
+              }
+            }
+            else if (thing2 == 'time machine') {
+              switch (thing) {
+                case 'light beam':
+                  $.ego.moveTo(e.target.offsetLeft + (e.target.offsetWidth / 2), $.ego.z, function() {
+                    $.ego.say("The time machine is charging...", 220, function() {
+                      $.ego.elem.style.opacity = 0.5;
+                      $.ego.say("Hey! Wait! What is it doing to me?.", 220, function() {
+                        $.Game.fadeOut($.ego.elem);
+                        setTimeout(function() {
+                          $.Game.initActors();
+                          $.ego.year = 2025;
+                          $.Game.userInput = true;
+                        }, 500);
+                      });
+                    });
+                  });
+                  break;
+
+                case 'mist':
+                  $.ego.say("There isn't enough light coming through the mist.", 300);
                   break;
                 
                 default:

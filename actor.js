@@ -98,10 +98,6 @@ class Actor extends Sprite {
           }
         }, 500);
       }, (text.length / 10) * 1500);
-
-      //let utterance = new SpeechSynthesisUtterance(text);
-      //utterance.pitch = 0;
-      //window.speechSynthesis.speak(utterance);
     }
   
     /**
@@ -109,7 +105,6 @@ class Actor extends Sprite {
      */
     update() {
       // Only update the Actor if it is currently on screen.
-      // TODO: if (this.elem.style.display == 'block') {
       if (this.elem.style.display != 'none') {
         // Mask out left/right/in/out but retain the current jumping directions.
         let direction;
