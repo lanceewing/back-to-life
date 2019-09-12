@@ -40,9 +40,26 @@ $.Logic = {
               $.ego.moveTo($.activeDoor.offsetLeft + ($.activeDoor.offsetWidth / 2), $.ego.z, function() {
                 if (!$.inside) {
                   $.activeDoor.children[0].style.transform = "rotateY(-120deg)";
+
+                  if ($.Game.room == 40) {
+                    // Black door, so game over.
+                    $.ego.say("I see myself inside, and have told him to stay inside.", 250, function() {
+                      $.ego.say("He has agreed. Now no-one will catch The Death.", 250, function () {
+                        for (let i=0; i<$.Game.objs.length; i++) {
+                          $.Game.objs[i].remove();
+                        }
+                        $.Game.objs = [];
+                        $.wrap.style.cursor = 'crosshair';
+                        $.Game.fadeOut($.wrap);
+                        $.Game.gameOver("Well done!!");
+                      });
+                    });
+                  }
                 }
               });
-              $.ego.moveTo($.activeDoor.offsetLeft + ($.activeDoor.offsetWidth / 2), $.activeDoor.offsetTop);
+              if ($.Game.room != 40) {
+                $.ego.moveTo($.activeDoor.offsetLeft + ($.activeDoor.offsetWidth / 2), $.activeDoor.offsetTop);
+              }
             } else {
               $.ego.say("The door is closed.", 220);
             }
@@ -259,7 +276,7 @@ $.Logic = {
             $.ego.moveTo($.activeDoor.offsetLeft + ($.activeDoor.offsetWidth / 2), $.ego.z, function() {
               if ($.roomData[9] || $.inside) {  // Unlocked
                 if ($.roomData[8]) {
-                  $.ego.say("The door is alrleady open.", 230);
+                  $.ego.say("The door is already open.", 230);
                 } else {
                   $.activeDoor.children[0].style.transform = ($.inside? "rotateY(180deg)" : "rotateY(-45deg)");
                   $.roomData[8] = true;

@@ -269,20 +269,26 @@ $.Game = {
     /**
      * 
      */
-    gameOver: function() {
+    gameOver: function(msg) {
+      this.userInput = true;
       this.fadeOut($.screen);
+      if (msg) {
+        $.msg.innerHTML = msg;
+      }
+      $.msg.style.display = 'block';
       this.fadeIn($.msg);
-
-      window.onclick = function(e) {
-        $.Game.fadeOut($.msg);
-        setTimeout(function() {
-          $.msg.style.display = 'none';
-        }, 200);
-        setTimeout(function(e) {
-          $.Game.init();
-          $.Game.loop();
-        }, 500);
-      };
+      if (!msg) {
+        window.onclick = function(e) {
+          $.Game.fadeOut($.msg);
+          setTimeout(function() {
+            $.msg.style.display = 'none';
+          }, 200);
+          setTimeout(function(e) {
+            $.Game.init();
+            $.Game.loop();
+          }, 500);
+        };
+      }
     },
 
     /**
@@ -291,6 +297,7 @@ $.Game = {
      */
     init: function() {
       this._gameOver = false;
+      this.userInput = true;
 
       window.onclick = null;
 
@@ -326,27 +333,23 @@ $.Game = {
 
       // Starting inventory.
       this.getItem('touch of death');
-      // TODO: Remove.
-      //this.getItem('time machine');
-      this.getItem('green key');
       
       // Enter the starting room.
       this.newRoom();
       
-      // TODO: Uncomment.
       // Intro text.
-      // this.userInput = false;
-      // $.ego.say('Where am I?', 140, function() {
-      //   $.ego.moveTo(500, 600, function() {
-      //     $.ego.say('Who am I?', 140, function() {
-      //       $.ego.moveTo(500, 640, function() {
-      //         $.ego.say('And why is there a body over there that looks like me?', 300, function() {
-      //           $.Game.userInput = true;
-      //         });
-      //       });
-      //     });
-      //   });
-      // });
+      this.userInput = false;
+      $.ego.say('Where am I?', 140, function() {
+        $.ego.moveTo(500, 600, function() {
+          $.ego.say('Who am I?', 140, function() {
+            $.ego.moveTo(500, 640, function() {
+              $.ego.say('And why is there a body over there that looks like me?', 300, function() {
+                $.Game.userInput = true;
+              });
+            });
+          });
+        });
+      });
       
       // Fade in the whole screen at the start.
       this.fadeIn($.wrap);
@@ -371,7 +374,11 @@ $.Game = {
      */
     loop: function(now) {
       // Immediately request another invocation on the next
-      requestAnimationFrame(this._loop);
+      if (!this._gameOver) {
+        requestAnimationFrame(this._loop);
+      } else {
+        return;
+      }
       
       // Calculates the time since the last invocation of the game loop.
       this.updateDelta(now);
@@ -540,7 +547,7 @@ $.Game = {
         this.objs[i].remove();
       }
       this.objs = [];
-      
+
       $.roomData = this.rooms[this.room - 1];
       
       $.inside = ($.roomData[0] & 0x80);
