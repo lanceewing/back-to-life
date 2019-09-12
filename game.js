@@ -87,7 +87,7 @@ $.Game = {
       [0x39,   , 42, 93,   , 40,   ,  1,   ,   , 'green' ],  // 41
       [0x34, 43,   ,   ,   , 41,   , 87 ],  // 42
       [0x34, 44,   ,   ,   ,   , 42,    ],  // 43
-      [0x34, 45,   ,   ,   ,   , 43, 77 ],  // 44
+      [0x34, 45,   , 99,   ,   , 43, 77,   ,   , 'red'  ],  // 44
       [0x34, 46,   ,   ,   ,   , 44,    ],  // 45
       [0x34,   , 35,   ,   ,   , 45, 59 ],  // 46
 
@@ -177,7 +177,8 @@ $.Game = {
 
       [62, 1, 'green_key', 18, 3, 455, 540, null],
 
-      [40, /*23,*/ 2, 'light_beam', 100, 264, 613, 520, null, 900],
+      [1, 2, 'light_beam', 100, 264, 613, 520, null, 900],
+      [46, 2, 'light_beam', 100, 264, 613, 520, null, 900],
 
       [41, 0, 'reaper', 50, 150, 710, 650, null],
 
@@ -326,7 +327,7 @@ $.Game = {
       // Starting inventory.
       this.getItem('touch of death');
       // TODO: Remove.
-      this.getItem('time machine');
+      //this.getItem('time machine');
       
       // Enter the starting room.
       this.newRoom();
@@ -506,6 +507,7 @@ $.Game = {
 
       // No ghosts in starting room.
       this.actors[41] = [];
+      this.actors[40] = [];
     },
 
     /**

@@ -89,15 +89,23 @@ $.Logic = {
             $.ego.say("The path makes a 90 degree turn around the corner.", 250);
             break;
 
+          case 'light beam':
+            $.ego.say("A beam of sun light breaks through the mist.", 250);
+            break;
+
           case 'time machine':
             $.ego.say("It has a solar panel on it.", 250);
             break;
 
           case 'door':
-            if ($.roomData[8]) {
-              $.ego.say("The door is open.", 250);
+            if ($.Game.room == 40) {
+              $.ego.say("This black door looks vaguely familiar.", 250);
             } else {
-              $.ego.say("The door is closed.", 250);
+              if ($.roomData[8]) {
+                $.ego.say("The door is open.", 250);
+              } else {
+                $.ego.say("The door is closed.", 250);
+              }
             }
             break;
 
@@ -112,7 +120,11 @@ $.Logic = {
             break;
 
           case 'mist':
-            $.ego.say("The mist is glowing green. It looks poluted.", 250);
+            if ($.Game.year == 2030) {
+              $.ego.say("The mist is glowing green. It looks poluted.", 250);
+            } else {
+              $.ego.say("The mist is white, and clean.", 250);
+            }
             break;
 
           case 'backpack':
@@ -299,11 +311,15 @@ $.Logic = {
                     if ($.roomData[9] || $.inside) {
                       $.ego.say("I don't want to lock it again.", 220);
                     } else {
-                      let keyRooms = {'green key': 41};
+                      let keyRooms = {'green key': 41, 'black key': 40};
                       if (keyRooms[thing2] == $.Game.room) {
-                        // The key is for this door.
-                        $.roomData[9] = true;
-                        $.ego.say("The door is now unlocked.", 220);
+                        if ((thing2 == 'black key') && ($.Game.year == 2030)) {
+                          $.ego.say("It's the right key, but someone has recently damaged the lock. The key won't go in.", 370);
+                        } else {
+                          // The key is for this door.
+                          $.roomData[9] = true;
+                          $.ego.say("The door is now unlocked.", 220);
+                        }
                       } else {
                         $.ego.say("It's the wrong key for this door.", 220);
                       }
