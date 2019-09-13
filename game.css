@@ -48,23 +48,23 @@ span {
   display: none;
 }
 .door .green {
-  background-color: #051f01fa;
+  background-color: rgba(5, 31, 1, 0.98);
   box-shadow: inset #001306 0px 0px 3px 4px;
-  background-image: linear-gradient(90deg, transparent 97%, #193115fa 97%);
+  background-image: linear-gradient(90deg, transparent 97%, rgba(25, 49, 21, 0.98) 97%);
 }
 .door .red {
-  background-color: #400b0bfa;
+  background-color: rgba(64, 11, 11, 0.98);
   box-shadow: inset #250307 0px 0px 3px 4px;
-  background-image: linear-gradient(90deg, transparent 97%, #562121fa 97%);
+  background-image: linear-gradient(90deg, transparent 97%, rgba(86, 33, 33, 0.98) 97%);
 }
 .door .black {
-  background-color: #000000fa;
+  background-color: rgba(0, 0, 0, 0.98);
   box-shadow: inset #2b2b2b 0px 0px 3px 4px;
-  background-image: linear-gradient(90deg, transparent 97%, #2d2d2dfa 97%);
+  background-image: linear-gradient(90deg, transparent 97%, rgba(45, 45, 45, 0.98) 97%);
 }
 .inside .door {
-  background-image: linear-gradient(#AD9E7B22 80%, #11111133 20%);
-  background-color: #ffffff44
+  background-image: linear-gradient(rgba(173, 158, 123, 0.13) 80%, rgba(17, 17, 17, 0.2) 20%);
+  background-color: rgba(255, 255, 255, 0.27);
 }
 .door div {
   transition: transform 0.5s;
@@ -169,7 +169,7 @@ span {
   width: 960px;
   height: 209px;
   z-index: 5;
-  background-color: #ffe4c42e;
+  background-color: rgba(255, 228, 196, 0.18); /* #ffe4c42e;*/
 }
 .bricks {
   background-image: 
@@ -194,14 +194,6 @@ span {
 #wall.right {
   width: 860px;
 }
-@keyframes movewater {
-  0% {
-    left: -110px;
-  }
-  100% {
-    left: 0px;
-  }
-}
 #curb {
 	width: 960px;
 	height: 30px;
@@ -210,24 +202,8 @@ span {
 	z-index: 1;
 	box-shadow: #111 0px 10px 25px 0px;
 }
-.inside #curb{
+.inside #curb {
   display: none;
-}
-#water {
-  background: 
-    linear-gradient(#222222 55%, rgba(255,255,255,0) 0) 0 0px,
-    radial-gradient(circle closest-side, #222222 63%, rgba(255,255,255,0) 0) 0 0,
-    radial-gradient(circle closest-side, #222222 60%, rgba(255,255,255,0) 0) 55px 0 rgba(255,255,255,0);
-  background-size:110px 90px;
-  background-repeat:repeat-x;
-  width: 1070px;
-  height: 90px;
-  bottom: 0px;
-  z-index: 0;
-  animation-duration: 10s;
-  animation-name: movewater;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
 }
 #road {
   width: 1070px;
@@ -287,7 +263,6 @@ span {
 .year2025 #time_machine {
   display: none;
 }
-
 #sign {
   left: 120px;
   top: 59px;
@@ -353,34 +328,6 @@ span {
   background: #000;
   border-radius: 50%;
   opacity: 0.5;
-}
-#doll:after {
-	width: 20px;
-	height: 6px;
-}
-#blanket {
-	background-color: #520116;
-	border: 3px solid black;
-}
-#phone {
-	background-color: silver;
-	border: 2px solid black;
-}
-#book {
-	background-color: #60447b;
-  border: 2px solid black;
-}
-.b1 {
-  background-color: rgba(55, 0, 0, 0.3);
-}
-.b2 {
-  background-color: rgba(25,16,0,0.5);
-}
-.b3 {
-  background-color: rgba(0,0,0,0.8);
-}
-.b4 {
-  background-color: rgba(0,19,35,0.3);
 }
 #crossing {
   bottom: 15px;
