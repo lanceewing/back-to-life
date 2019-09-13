@@ -17,6 +17,7 @@ $.Logic = {
                 $.reaper.moveTo($.reaper.x - 70, $.reaper.z, function() { $.reaper.ignore = true; });
                 $.ego.moveTo($.reaper.x - 120, 550);
                 $.roomData[11] = ($.roomData[11]? 2 : 1);
+                $.Game.addToScore(15);
               });
             } else {
               $.ego.say("I think I'll let him be now.", 220);
@@ -44,6 +45,7 @@ $.Logic = {
                   if ($.Game.room == 40) {
                     // Black door, so game over.
                     $.ego.say("I see myself inside, and have told him to stay inside.", 250, function() {
+                      $.Game.addToScore(15);
                       $.ego.say("He has agreed. Now no-one will catch The Death.", 250, function () {
                         for (let i=0; i<$.Game.objs.length; i++) {
                           $.Game.objs[i].remove();
@@ -230,8 +232,10 @@ $.Logic = {
                                           ghost.say("If you stop us leaving our room, everyone else will come Back to Life.", 300, function() {
                                             ghost.say("I'm fading now. I'll be gone...  forever...  Good luck.", 300, function() {
                                               ghost.elem.style.opacity = 0.0;
+                                              ghost.elem.style.display = 'none';
                                               $.Game.userInput = true;
                                               $.roomData[12] = true;
+                                              $.Game.addToScore(15);
                                             });
                                           });
                                         });
@@ -336,6 +340,7 @@ $.Logic = {
                           // The key is for this door.
                           $.roomData[9] = true;
                           $.ego.say("The door is now unlocked.", 220);
+                          $.Game.addToScore(15);
                         }
                       } else {
                         $.ego.say("It's the wrong key for this door.", 220);
@@ -377,6 +382,7 @@ $.Logic = {
                 case 'light beam':
                   $.ego.moveTo(e.target.offsetLeft + (e.target.offsetWidth / 2), $.ego.z, function() {
                     $.ego.say("The time machine is charging...", 220, function() {
+                      $.Game.addToScore(15);
                       $.ego.elem.style.opacity = 0.5;
                       $.ego.say("Hey! Wait! What is it doing to me?.", 220, function() {
                         $.Game.fadeOut($.ego.elem);
@@ -410,28 +416,6 @@ $.Logic = {
           newCommand = 'Give ' + thing + ' to ';
         } else {
           switch (cmd + thing) {
-            case 'Give doll to reaper':
-              $.Game.userInput = false;
-              $.ego.moveTo($.ego.cx, 600, function() {
-                $.ego.moveTo($.reaper.x, 600, function() {
-                  $.reaper.moveTo($.reaper.x + 200, 600, function() {
-                    $.reaper.setDirection($.Sprite.LEFT);
-                    $.reaper.say("Get that thing away from me!!", 300, function() {
-                      $.Game.fadeOut($.reaper.elem);
-                      $.reaper.moveTo(850, 600, function() {
-                        $.Game.props[0][0] = 0;
-                        $.Game.props[4][0] = 4;
-                        $.Game.addPropToRoom($.Game.props[4]);
-                        $.Game.addObjEventListeners($.Game.props[4][7].elem);
-                        $.reaper.remove();
-                        $.ego.say("Whoa! He didn't like that.", 300);
-                        $.Game.addToScore(84);
-                      });
-                    })
-                  })
-                });
-              });
-              break;
               
             default:
               if (thing == 'me') {
