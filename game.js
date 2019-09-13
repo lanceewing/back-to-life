@@ -280,6 +280,9 @@ $.Game = {
       this.fadeIn($.msg);
       if (!msg) {
         window.onclick = function(e) {
+          if (document.fullscreenEnabled) {
+            document.documentElement.requestFullscreen();
+          }
           $.Game.fadeOut($.msg);
           setTimeout(function() {
             $.msg.style.display = 'none';
@@ -301,10 +304,6 @@ $.Game = {
       this.userInput = true;
 
       window.onclick = null;
-
-      if (document.fullscreenEnabled) {
-       document.documentElement.requestFullscreen();
-      }
 
       $.screen.onclick = function(e) {
         $.Game.processCommand(e);
