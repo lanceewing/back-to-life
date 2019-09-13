@@ -483,7 +483,7 @@ $.Game = {
      */
     addToScore: function(points) {
       this.score += points;
-      $.score.innerHTML = '' + this.score + ' of 230';
+      $.score.innerHTML = '' + this.score + ' of 150';
     },
     
     /**
