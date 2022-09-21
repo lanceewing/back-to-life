@@ -1,5 +1,5 @@
 # Back to Life
-Back to Life is a time travelling animated adventure game written for the 2019 js13kGames contest. You play the Reaper, travelling back in time to (ironically) bring everyone else back to life!
+Back to Life is a time travelling animated adventure game written for the [2019 js13kGames](https://js13kgames.com/entries/2019) contest. You play the Reaper, travelling back in time to (ironically) bring everyone else back to life!
 
 ![Screenshot](img/screenshot.jpg)
 
